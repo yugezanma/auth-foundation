@@ -1,0 +1,668 @@
+{
+ "name": "errors",
+ "description": "データの不整合はエラー。確かめるのは本人の集めた割当だけ。所属が無ければ割当を確かめる前に断る",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "t",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "s1",
+    "groups": [
+     "g1"
+    ]
+   },
+   {
+    "id": "s2",
+    "groups": [
+     "g1",
+     "g2"
+    ]
+   },
+   {
+    "id": "s3",
+    "groups": [
+     "g2"
+    ]
+   },
+   {
+    "id": "s4",
+    "groups": []
+   }
+  ],
+  "groups": [
+   {
+    "id": "g1"
+   },
+   {
+    "id": "g2"
+   }
+  ],
+  "memberships": [
+   {
+    "user_id": "u1",
+    "status": "active"
+   },
+   {
+    "user_id": "u2",
+    "status": "active"
+   },
+   {
+    "user_id": "u3",
+    "status": "active"
+   },
+   {
+    "user_id": "u4",
+    "status": "active"
+   },
+   {
+    "user_id": "u5",
+    "status": "active"
+   },
+   {
+    "user_id": "u6",
+    "status": "active"
+   },
+   {
+    "user_id": "u7",
+    "status": "suspended"
+   },
+   {
+    "user_id": "u8",
+    "status": "active"
+   },
+   {
+    "user_id": "u9",
+    "status": "active"
+   },
+   {
+    "user_id": "u10",
+    "status": "active"
+   }
+  ],
+  "teams": [],
+  "assignments": [
+   {
+    "id": "a1",
+    "principal": {
+     "type": "user",
+     "id": "u1"
+    },
+    "role": "ghost",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": "2026-01-01T00:00:00Z",
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a2",
+    "principal": {
+     "type": "user",
+     "id": "u2"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "region",
+     "id": "r1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a3",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "site",
+     "id": "s9"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a4",
+    "principal": {
+     "type": "user",
+     "id": "u4"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "site_group",
+     "id": "g9"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a5",
+    "principal": {
+     "type": "user",
+     "id": "u5"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [
+     {
+      "type": "org",
+      "id": null
+     }
+    ],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a6",
+    "principal": {
+     "type": "user",
+     "id": "u6"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [
+     {
+      "type": "site",
+      "id": "s9"
+     }
+    ],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a7",
+    "principal": {
+     "type": "user",
+     "id": "u7"
+    },
+    "role": "ghost",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a8",
+    "principal": {
+     "type": "user",
+     "id": "u8"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [
+     {
+      "type": "site_group",
+      "id": "g9"
+     }
+    ],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a9",
+    "principal": {
+     "type": "user",
+     "id": "u9"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "equipment",
+     "id": "e999"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a10",
+    "principal": {
+     "type": "user",
+     "id": "u9"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site",
+     "id": "s1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "未知のロール(期限切れでも確かめる)",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_role"
+  },
+  {
+   "name": "未知の範囲の種類",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "invalid_scope"
+  },
+  {
+   "name": "範囲の拠点が無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_site"
+  },
+  {
+   "name": "範囲のグループが無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u4",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_group"
+  },
+  {
+   "name": "除外の種類が org",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u5",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "invalid_exclusion"
+  },
+  {
+   "name": "除外の拠点が無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_site"
+  },
+  {
+   "name": "除外のグループが無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u8",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_group"
+  },
+  {
+   "name": "停止中なら割当を確かめる前に断る",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u7",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "停止中でも permission の誤りはエラー",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u7",
+    "permission": "report.delete",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_permission"
+  },
+  {
+   "name": "equipment の ID は確かめない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u9",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a10",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "s1"
+      },
+      "role": "worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "ほかの人の割当の誤りは見ない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u10",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "拠点の ID が重複",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u10",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": []
+      },
+      {
+       "id": "s1",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [
+      {
+       "id": "t1",
+       "members": [
+        "u2",
+        "u3"
+       ]
+      },
+      {
+       "id": "t2",
+       "members": [
+        "u4"
+       ]
+      }
+     ],
+     "assignments": []
+    }
+   },
+   "expect_error": "duplicate_site"
+  },
+  {
+   "name": "permissions_at も同じエラー",
+   "call": "permissions_at",
+   "args": {
+    "user_id": "u1",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_role"
+  },
+  {
+   "name": "permissions_at の未知の拠点",
+   "call": "permissions_at",
+   "args": {
+    "user_id": "u10",
+    "resource": {
+     "type": "site",
+     "id": "s9"
+    }
+   },
+   "expect_error": "unknown_site"
+  },
+  {
+   "name": "sites_with の未知の権限",
+   "call": "sites_with",
+   "args": {
+    "user_id": "u10",
+    "permission": "x.view"
+   },
+   "expect_error": "unknown_permission"
+  }
+ ]
+}

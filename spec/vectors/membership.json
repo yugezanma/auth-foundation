@@ -1,0 +1,423 @@
+{
+ "name": "membership",
+ "description": "有効な所属が無ければ not_member。停止中・招待中・所属なし。所属の重複はエラー",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "t",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "s1",
+    "groups": [
+     "g1"
+    ]
+   },
+   {
+    "id": "s2",
+    "groups": [
+     "g1",
+     "g2"
+    ]
+   },
+   {
+    "id": "s3",
+    "groups": [
+     "g2"
+    ]
+   },
+   {
+    "id": "s4",
+    "groups": []
+   }
+  ],
+  "groups": [
+   {
+    "id": "g1"
+   },
+   {
+    "id": "g2"
+   }
+  ],
+  "memberships": [
+   {
+    "user_id": "u1",
+    "status": "active"
+   },
+   {
+    "user_id": "u2",
+    "status": "active"
+   },
+   {
+    "user_id": "u3",
+    "status": "active"
+   },
+   {
+    "user_id": "u4",
+    "status": "active"
+   },
+   {
+    "user_id": "u5",
+    "status": "active"
+   },
+   {
+    "user_id": "u6",
+    "status": "active"
+   },
+   {
+    "user_id": "u7",
+    "status": "suspended"
+   },
+   {
+    "user_id": "u8",
+    "status": "invited"
+   }
+  ],
+  "teams": [
+   {
+    "id": "t1",
+    "members": [
+     "u2",
+     "u3"
+    ]
+   },
+   {
+    "id": "t2",
+    "members": [
+     "u4"
+    ]
+   }
+  ],
+  "assignments": [
+   {
+    "id": "a1",
+    "principal": {
+     "type": "user",
+     "id": "u7"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a2",
+    "principal": {
+     "type": "user",
+     "id": "u8"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a3",
+    "principal": {
+     "type": "user",
+     "id": "u7"
+    },
+    "role": "ghost",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a4",
+    "principal": {
+     "type": "user",
+     "id": "u99"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "停止中",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u7",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "招待中",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u8",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "所属が無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u99",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "停止中の permissions_at は空",
+   "call": "permissions_at",
+   "args": {
+    "user_id": "u7",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {}
+  },
+  {
+   "name": "招待中の sites_with は空",
+   "call": "sites_with",
+   "args": {
+    "user_id": "u8",
+    "permission": "report.view"
+   },
+   "expect": []
+  },
+  {
+   "name": "所属が同じ user_id で2つ",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u1",
+       "status": "suspended"
+      }
+     ],
+     "teams": [
+      {
+       "id": "t1",
+       "members": [
+        "u2",
+        "u3"
+       ]
+      },
+      {
+       "id": "t2",
+       "members": [
+        "u4"
+       ]
+      }
+     ],
+     "assignments": []
+    }
+   },
+   "expect_error": "duplicate_membership"
+  }
+ ]
+}

@@ -1,0 +1,260 @@
+{
+ "name": "catalog",
+ "description": "validate_catalog: 正しいカタログと、誤りの種類・並び順",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "正しいカタログは誤りなし",
+   "call": "validate_catalog",
+   "args": {},
+   "expect": []
+  },
+  {
+   "name": "member・audit が無い",
+   "call": "validate_catalog",
+   "args": {
+    "catalog": {
+     "features": {
+      "report": [
+       "view"
+      ]
+     },
+     "roles": []
+    }
+   },
+   "expect": [
+    {
+     "code": "missing_required_feature",
+     "feature": "member"
+    },
+    {
+     "code": "missing_required_feature",
+     "feature": "audit"
+    }
+   ]
+  },
+  {
+   "name": "誤りをまとめて決まった順に返す",
+   "call": "validate_catalog",
+   "args": {
+    "catalog": {
+     "features": {
+      "report": [
+       "view",
+       "delete",
+       "view"
+      ],
+      "site_master": [
+       "view"
+      ]
+     },
+     "roles": [
+      {
+       "key": "a",
+       "rank": 1,
+       "audience": "internal",
+       "perms": {
+        "report": [
+         "view",
+         "edit"
+        ],
+        "ghost": [
+         "view"
+        ]
+       }
+      },
+      {
+       "key": "a",
+       "rank": "2",
+       "audience": "guest",
+       "perms": {}
+      },
+      {
+       "key": "b",
+       "rank": 1.5,
+       "audience": "owner",
+       "perms": {
+        "site_master": [
+         "approve"
+        ]
+       }
+      },
+      {
+       "key": "c",
+       "rank": true,
+       "audience": "partner",
+       "perms": {}
+      }
+     ]
+    }
+   },
+   "expect": [
+    {
+     "code": "invalid_action",
+     "feature": "report",
+     "action": "delete"
+    },
+    {
+     "code": "duplicate_action",
+     "feature": "report",
+     "action": "view"
+    },
+    {
+     "code": "missing_required_feature",
+     "feature": "member"
+    },
+    {
+     "code": "missing_required_feature",
+     "feature": "audit"
+    },
+    {
+     "code": "unknown_action",
+     "role": "a",
+     "feature": "report",
+     "action": "edit"
+    },
+    {
+     "code": "unknown_feature",
+     "role": "a",
+     "feature": "ghost"
+    },
+    {
+     "code": "duplicate_role",
+     "role": "a"
+    },
+    {
+     "code": "invalid_audience",
+     "role": "a"
+    },
+    {
+     "code": "invalid_rank",
+     "role": "a"
+    },
+    {
+     "code": "invalid_rank",
+     "role": "b"
+    },
+    {
+     "code": "unknown_action",
+     "role": "b",
+     "feature": "site_master",
+     "action": "approve"
+    },
+    {
+     "code": "invalid_rank",
+     "role": "c"
+    }
+   ]
+  }
+ ]
+}

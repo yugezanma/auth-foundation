@@ -1,0 +1,2550 @@
+{
+ "name": "guard",
+ "description": "check_guard: 最後の管理者を守る(no_admin_left)、自分を締め出さない(self_lockout)",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "ほかの管理者を降格(管理者は残る)",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": []
+  },
+  {
+   "name": "自分を降格",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": [
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "管理者が全員いなくなる",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    },
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "管理者でない人が管理者を全員外す",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u3"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    }
+   ]
+  },
+  {
+   "name": "ほかの管理者を停止",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": []
+  },
+  {
+   "name": "自分を停止",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": [
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "チーム経由の管理者がチームを抜ける",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [
+      {
+       "id": "t1",
+       "members": [
+        "u1"
+       ]
+      }
+     ],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "team",
+        "id": "t1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [
+      {
+       "id": "t1",
+       "members": []
+      }
+     ],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "team",
+        "id": "t1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": [
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "拠点だけの admin は守る権限に数えない",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    },
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "期限切れの admin は守る権限に数えない",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T09:00:00+09:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u2"
+   },
+   "expect": [
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "守る権限を指定する",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "office",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1",
+    "guard_permission": "contract.edit"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    },
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "変更の後に未知のロール",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "ghost",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1"
+   },
+   "expect_error": "unknown_role"
+  },
+  {
+   "name": "未知の守る権限",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "u1",
+    "guard_permission": "member.delete"
+   },
+   "expect_error": "unknown_permission"
+  }
+ ]
+}

@@ -1,0 +1,625 @@
+{
+ "name": "audit",
+ "description": "監査ログの形(make_audit_event・validate_audit_event・audit_retention)",
+ "cases": [
+  {
+   "name": "足りない任意の項目は null、actor_tenant_id は host と同じ",
+   "call": "make_audit_event",
+   "args": {
+    "fields": {
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "action": "member.created",
+     "target_type": "user",
+     "target_id": "u2",
+     "created_at": "2026-11-01T09:00:00+09:00"
+    }
+   },
+   "expect": {
+    "id": null,
+    "host_tenant_id": "t",
+    "actor_user_id": "u1",
+    "actor_tenant_id": "t",
+    "action": "member.created",
+    "target_type": "user",
+    "target_id": "u2",
+    "before": null,
+    "after": null,
+    "ip_address": null,
+    "created_at": "2026-11-01T09:00:00+09:00"
+   }
+  },
+  {
+   "name": "全部の項目があればそのまま",
+   "call": "make_audit_event",
+   "args": {
+    "fields": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": {
+    "id": "e1",
+    "host_tenant_id": "t",
+    "actor_user_id": "u1",
+    "actor_tenant_id": "t",
+    "action": "member.updated",
+    "target_type": "user",
+    "target_id": "u2",
+    "before": {
+     "name": "A"
+    },
+    "after": {
+     "name": "B"
+    },
+    "ip_address": "127.0.0.1",
+    "created_at": "2026-11-01T09:00:00Z"
+   }
+  },
+  {
+   "name": "秘密のキーがあれば作らない",
+   "call": "make_audit_event",
+   "args": {
+    "fields": {
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "action": "member.created",
+     "target_type": "user",
+     "target_id": "u2",
+     "created_at": "2026-11-01T09:00:00+09:00",
+     "after": {
+      "password": "x"
+     }
+    }
+   },
+   "expect_error": "invalid_audit_event"
+  },
+  {
+   "name": "表に無い項目があれば作らない",
+   "call": "make_audit_event",
+   "args": {
+    "fields": {
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "action": "member.created",
+     "target_type": "user",
+     "target_id": "u2",
+     "created_at": "2026-11-01T09:00:00+09:00",
+     "extra": 1
+    }
+   },
+   "expect_error": "invalid_audit_event"
+  },
+  {
+   "name": "必須の項目が無ければ作らない",
+   "call": "make_audit_event",
+   "args": {
+    "fields": {
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "target_type": "user",
+     "target_id": "u2",
+     "created_at": "2026-11-01T09:00:00+09:00"
+    }
+   },
+   "expect_error": "invalid_audit_event"
+  },
+  {
+   "name": "正しい記録",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "任意の項目は無くてよい",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "action": "member.created",
+     "target_type": "user",
+     "target_id": "u2",
+     "created_at": "2026-11-01T09:00:00+09:00",
+     "actor_tenant_id": "t"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "id は整数でもよい",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": 12,
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "登録の無いメールアドレスのログイン失敗",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "host_tenant_id": "t",
+     "actor_user_id": null,
+     "actor_tenant_id": "t",
+     "action": "auth.login.failed",
+     "target_type": "email",
+     "target_id": "nobody@example.com",
+     "after": {
+      "reason": "wrong_password"
+     },
+     "created_at": "2026-11-01T09:00:00+09:00"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "必須の項目が無い・null",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": null
+    }
+   },
+   "expect": [
+    {
+     "code": "missing_field",
+     "field": "host_tenant_id"
+    },
+    {
+     "code": "missing_field",
+     "field": "created_at"
+    }
+   ]
+  },
+  {
+   "name": "型の誤り",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": 1.5,
+     "host_tenant_id": "t",
+     "actor_user_id": 123,
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "",
+     "before": [
+      "x"
+     ],
+     "after": "y",
+     "ip_address": 1,
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": [
+    {
+     "code": "invalid_type",
+     "field": "id"
+    },
+    {
+     "code": "invalid_type",
+     "field": "actor_user_id"
+    },
+    {
+     "code": "invalid_type",
+     "field": "target_id"
+    },
+    {
+     "code": "invalid_type",
+     "field": "before"
+    },
+    {
+     "code": "invalid_type",
+     "field": "after"
+    },
+    {
+     "code": "invalid_type",
+     "field": "ip_address"
+    }
+   ]
+  },
+  {
+   "name": "時刻の形でない",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01 09:00"
+    }
+   },
+   "expect": [
+    {
+     "code": "invalid_time",
+     "field": "created_at"
+    }
+   ]
+  },
+  {
+   "name": "未知の操作名",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.deleted",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": [
+    {
+     "code": "unknown_action",
+     "field": "action"
+    }
+   ]
+  },
+  {
+   "name": "大文字の操作名",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "App.upload",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": [
+    {
+     "code": "unknown_action",
+     "field": "action"
+    }
+   ]
+  },
+  {
+   "name": "業務の記録 app.*",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "app.upload.created",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "拠点の追加",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "site.created",
+     "target_type": "site",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "拠点以外のアーカイブ",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "equipment.archived",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "予約の操作名",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "report.published",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "秘密のキー(入れ子・配列・code)と、表に無い項目",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "session_id": "s",
+      "name": "A"
+     },
+     "after": {
+      "user": {
+       "password_hash": "h",
+       "Site_Code": "A"
+      },
+      "items": [
+       {
+        "ok": 1
+       },
+       {
+        "Token": "t"
+       }
+      ],
+      "code": "123456"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z",
+     "extra": "x",
+     "note": null
+    }
+   },
+   "expect": [
+    {
+     "code": "secret_field",
+     "field": "before.session_id"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.user.password_hash"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.items.1.Token"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.code"
+    },
+    {
+     "code": "unknown_field",
+     "field": "extra"
+    },
+    {
+     "code": "unknown_field",
+     "field": "note"
+    }
+   ]
+  },
+  {
+   "name": "名前に otp・secret・passwd を含むキー",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "otp_sent": true,
+      "client_secret": "x",
+      "old_passwd": "y"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": [
+    {
+     "code": "secret_field",
+     "field": "after.otp_sent"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.client_secret"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.old_passwd"
+    }
+   ]
+  },
+  {
+   "name": "ログインの記録は13か月",
+   "call": "audit_retention",
+   "args": {
+    "action": "auth.login.failed"
+   },
+   "expect": "13_months"
+  },
+  {
+   "name": "ユーザー管理は無期限",
+   "call": "audit_retention",
+   "args": {
+    "action": "member.created"
+   },
+   "expect": "indefinite"
+  },
+  {
+   "name": "拠点の追加は無期限",
+   "call": "audit_retention",
+   "args": {
+    "action": "site.created"
+   },
+   "expect": "indefinite"
+  },
+  {
+   "name": "拠点以外のアーカイブは無期限",
+   "call": "audit_retention",
+   "args": {
+    "action": "equipment.unarchived"
+   },
+   "expect": "indefinite"
+  },
+  {
+   "name": "業務の記録は13か月",
+   "call": "audit_retention",
+   "args": {
+    "action": "app.pdf.exported"
+   },
+   "expect": "13_months"
+  },
+  {
+   "name": "予約の操作名",
+   "call": "audit_retention",
+   "args": {
+    "action": "report.published"
+   },
+   "expect": "indefinite"
+  },
+  {
+   "name": "未知の操作名",
+   "call": "audit_retention",
+   "args": {
+    "action": "member.deleted"
+   },
+   "expect_error": "unknown_action"
+  }
+ ]
+}

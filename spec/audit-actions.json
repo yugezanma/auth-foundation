@@ -1,0 +1,199 @@
+{
+  "description": "監査ログの操作名。docs/設計.md §4-2。required=必須、retention=保存期間、reserved=予約(使う段階で必須にする)。patterns は actions に無い名前に当てる正規表現で、上から順に見る",
+  "actions": [
+    {
+      "name": "auth.login.succeeded",
+      "required": true,
+      "retention": "13_months",
+      "reserved": false
+    },
+    {
+      "name": "auth.login.failed",
+      "required": true,
+      "retention": "13_months",
+      "reserved": false
+    },
+    {
+      "name": "auth.logout",
+      "required": false,
+      "retention": "13_months",
+      "reserved": false
+    },
+    {
+      "name": "auth.password.changed",
+      "required": true,
+      "retention": "13_months",
+      "reserved": false
+    },
+    {
+      "name": "auth.password.reset",
+      "required": true,
+      "retention": "13_months",
+      "reserved": false
+    },
+    {
+      "name": "member.created",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "member.updated",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "member.suspended",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "member.reactivated",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "member.password_set",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "member.invited",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "assignment.created",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "assignment.updated",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "assignment.revoked",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "role.changed",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "team.created",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "team.updated",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "team.archived",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "team.member_added",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "team.member_removed",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "site.created",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "site.archived",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "site.unarchived",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "collaboration.invited",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    },
+    {
+      "name": "collaboration.accepted",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    },
+    {
+      "name": "collaboration.suspended",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    },
+    {
+      "name": "collaboration.ended",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    },
+    {
+      "name": "report.published",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    },
+    {
+      "name": "report.unpublished",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    },
+    {
+      "name": "view_as.started",
+      "required": false,
+      "retention": "indefinite",
+      "reserved": true
+    }
+  ],
+  "patterns": [
+    {
+      "pattern": "^[a-z][a-z0-9_]*\\.(archived|unarchived)$",
+      "required": true,
+      "retention": "indefinite",
+      "description": "拠点以外のアーカイブとその解除"
+    },
+    {
+      "pattern": "^app(\\.[a-z][a-z0-9_]*)+$",
+      "required": false,
+      "retention": "13_months",
+      "description": "業務の記録(アプリが名前を決める)"
+    }
+  ]
+}
