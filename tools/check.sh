@@ -5,4 +5,4 @@ cd "$(dirname "$0")/.."
 echo "== Python"
 python3 -m unittest discover -s python/tests
 echo "== JS"
-node --test js/test/
+node --test js/test/*.test.mjs
