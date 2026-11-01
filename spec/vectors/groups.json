@@ -1,0 +1,473 @@
+{
+ "name": "groups",
+ "description": "グループの範囲。1つの拠点が2つのグループに属する(多対多)",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "t",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "s1",
+    "groups": [
+     "g1"
+    ]
+   },
+   {
+    "id": "s2",
+    "groups": [
+     "g1",
+     "g2"
+    ]
+   },
+   {
+    "id": "s3",
+    "groups": [
+     "g2"
+    ]
+   },
+   {
+    "id": "s4",
+    "groups": []
+   }
+  ],
+  "groups": [
+   {
+    "id": "g1"
+   },
+   {
+    "id": "g2"
+   }
+  ],
+  "memberships": [
+   {
+    "user_id": "u1",
+    "status": "active"
+   },
+   {
+    "user_id": "u2",
+    "status": "active"
+   },
+   {
+    "user_id": "u3",
+    "status": "active"
+   },
+   {
+    "user_id": "u4",
+    "status": "active"
+   },
+   {
+    "user_id": "u5",
+    "status": "active"
+   },
+   {
+    "user_id": "u6",
+    "status": "active"
+   },
+   {
+    "user_id": "u7",
+    "status": "suspended"
+   },
+   {
+    "user_id": "u8",
+    "status": "invited"
+   }
+  ],
+  "teams": [],
+  "assignments": [
+   {
+    "id": "a1",
+    "principal": {
+     "type": "user",
+     "id": "u1"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site_group",
+     "id": "g1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a2",
+    "principal": {
+     "type": "user",
+     "id": "u2"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site_group",
+     "id": "g2"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a3",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "manager",
+    "scope": {
+     "type": "site_group",
+     "id": "g1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a4",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "manager",
+    "scope": {
+     "type": "site_group",
+     "id": "g2"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "g1 の拠点",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a1",
+      "via": null,
+      "scope": {
+       "type": "site_group",
+       "id": "g1"
+      },
+      "role": "worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "g1 と g2 の両方に属する拠点",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s2"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a1",
+      "via": null,
+      "scope": {
+       "type": "site_group",
+       "id": "g1"
+      },
+      "role": "worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "g2 だけの拠点",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s3"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "グループに属さない拠点",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s4"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "g2 から両方に属する拠点",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s2"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a2",
+      "via": null,
+      "scope": {
+       "type": "site_group",
+       "id": "g2"
+      },
+      "role": "worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "g2 からは g1 だけの拠点に届かない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "両方のグループの割当から届く",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.approve",
+    "resource": {
+     "type": "site",
+     "id": "s2"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a3",
+      "via": null,
+      "scope": {
+       "type": "site_group",
+       "id": "g1"
+      },
+      "role": "manager",
+      "direct": true
+     },
+     {
+      "assignment_id": "a4",
+      "via": null,
+      "scope": {
+       "type": "site_group",
+       "id": "g2"
+      },
+      "role": "manager",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "グループの割当は組織全体には届かない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.approve",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sites_with: g1",
+   "call": "sites_with",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.create"
+   },
+   "expect": [
+    "s1",
+    "s2"
+   ]
+  },
+  {
+   "name": "sites_with: g1 と g2",
+   "call": "sites_with",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.create"
+   },
+   "expect": [
+    "s1",
+    "s2",
+    "s3"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,544 @@
+{
+ "name": "basic",
+ "description": "直接の割当、org と site の範囲、組織全体の操作には site の割当が届かないこと、入力のエラー",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "t",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "s1",
+    "groups": [
+     "g1"
+    ]
+   },
+   {
+    "id": "s2",
+    "groups": [
+     "g1",
+     "g2"
+    ]
+   },
+   {
+    "id": "s3",
+    "groups": [
+     "g2"
+    ]
+   },
+   {
+    "id": "s4",
+    "groups": []
+   }
+  ],
+  "groups": [
+   {
+    "id": "g1"
+   },
+   {
+    "id": "g2"
+   }
+  ],
+  "memberships": [
+   {
+    "user_id": "u1",
+    "status": "active"
+   },
+   {
+    "user_id": "u2",
+    "status": "active"
+   },
+   {
+    "user_id": "u3",
+    "status": "active"
+   },
+   {
+    "user_id": "u4",
+    "status": "active"
+   },
+   {
+    "user_id": "u5",
+    "status": "active"
+   },
+   {
+    "user_id": "u6",
+    "status": "active"
+   },
+   {
+    "user_id": "u7",
+    "status": "suspended"
+   },
+   {
+    "user_id": "u8",
+    "status": "invited"
+   }
+  ],
+  "teams": [
+   {
+    "id": "t1",
+    "members": [
+     "u2",
+     "u3"
+    ]
+   },
+   {
+    "id": "t2",
+    "members": [
+     "u4"
+    ]
+   }
+  ],
+  "assignments": [
+   {
+    "id": "a1",
+    "principal": {
+     "type": "user",
+     "id": "u1"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a2",
+    "principal": {
+     "type": "user",
+     "id": "u2"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site",
+     "id": "s1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a3",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "org の admin は組織全体のユーザー管理ができる",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a1",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "org の割当はどの拠点にも届く",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "s3"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a1",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "site の割当はその拠点に届く",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a2",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "s1"
+      },
+      "role": "worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "site の割当はほかの拠点には届かない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s2"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "site の割当は組織全体の操作には届かない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "どの割当も持たない権限",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "ロールに無い権限",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "org の viewer はグループの無い拠点も見られる",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s4"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a3",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "viewer は編集できない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "割当の無い有効なユーザー",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u5",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "カタログに無い動詞",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.delete",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_permission"
+  },
+  {
+   "name": "feature.action の形でない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_permission"
+  },
+  {
+   "name": "カタログに無い機能グループ",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "nothing.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect_error": "unknown_permission"
+  },
+  {
+   "name": "対象の種類が org・site 以外",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site_group",
+     "id": "g1"
+    }
+   },
+   "expect_error": "invalid_resource"
+  },
+  {
+   "name": "site の対象に id が無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site"
+    }
+   },
+   "expect_error": "invalid_resource"
+  },
+  {
+   "name": "未知の拠点",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s9"
+    }
+   },
+   "expect_error": "unknown_site"
+  }
+ ]
+}

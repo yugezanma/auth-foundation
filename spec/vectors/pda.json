@@ -1,0 +1,6749 @@
+{
+ "name": "pda",
+ "description": "電力データ集計の今の判定(app/core/auth.py の can_operate・is_admin と断る理由)を、共通の形(設計.md §7)に当てはめたもの。sakusei3 は担当契約が0件の作成者で、割当だけでは閲覧と同じ no_permission になる(文言は画面のロールでアプリが選ぶ)。muko は無効にしたユーザー",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "edit"
+   ],
+   "site_master": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "edit"
+     ],
+     "site_master": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "creator",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "default",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "A",
+    "groups": []
+   },
+   {
+    "id": "B",
+    "groups": []
+   },
+   {
+    "id": "C",
+    "groups": []
+   },
+   {
+    "id": "D",
+    "groups": []
+   },
+   {
+    "id": "E",
+    "groups": []
+   },
+   {
+    "id": "F",
+    "groups": []
+   }
+  ],
+  "groups": [],
+  "memberships": [
+   {
+    "user_id": "admin",
+    "status": "active"
+   },
+   {
+    "user_id": "sakusei1",
+    "status": "active"
+   },
+   {
+    "user_id": "sakusei2",
+    "status": "active"
+   },
+   {
+    "user_id": "etsuran",
+    "status": "active"
+   },
+   {
+    "user_id": "sakusei3",
+    "status": "active"
+   },
+   {
+    "user_id": "muko",
+    "status": "suspended"
+   }
+  ],
+  "teams": [],
+  "assignments": [
+   {
+    "id": "admin@org",
+    "principal": {
+     "type": "user",
+     "id": "admin"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei1@A",
+    "principal": {
+     "type": "user",
+     "id": "sakusei1"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "A"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei1@C",
+    "principal": {
+     "type": "user",
+     "id": "sakusei1"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "C"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei1@E",
+    "principal": {
+     "type": "user",
+     "id": "sakusei1"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "E"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei1@org",
+    "principal": {
+     "type": "user",
+     "id": "sakusei1"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei2@B",
+    "principal": {
+     "type": "user",
+     "id": "sakusei2"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "B"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei2@D",
+    "principal": {
+     "type": "user",
+     "id": "sakusei2"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "D"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei2@F",
+    "principal": {
+     "type": "user",
+     "id": "sakusei2"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "F"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei2@org",
+    "principal": {
+     "type": "user",
+     "id": "sakusei2"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "etsuran@org",
+    "principal": {
+     "type": "user",
+     "id": "etsuran"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "sakusei3@org",
+    "principal": {
+     "type": "user",
+     "id": "sakusei3"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "muko@A",
+    "principal": {
+     "type": "user",
+     "id": "muko"
+    },
+    "role": "creator",
+    "scope": {
+     "type": "site",
+     "id": "A"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   },
+   {
+    "id": "muko@org",
+    "principal": {
+     "type": "user",
+     "id": "muko"
+    },
+    "role": "viewer",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "admin",
+    "created_at": "2026-10-29T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "admin / report.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / report.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / site_master.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "site_master.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / member.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / member.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "member.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / member.edit / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / audit.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "admin",
+    "permission": "audit.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "admin@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "admin / 操作できる契約(report.edit)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.edit"
+   },
+   "expect": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "name": "admin / 操作できる契約(report.view)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "admin",
+    "permission": "report.view"
+   },
+   "expect": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "name": "sakusei1 / report.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@A",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "A"
+      },
+      "role": "creator",
+      "direct": true
+     },
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@C",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "C"
+      },
+      "role": "creator",
+      "direct": true
+     },
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@E",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "E"
+      },
+      "role": "creator",
+      "direct": true
+     },
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@A",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "A"
+      },
+      "role": "creator",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / report.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@C",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "C"
+      },
+      "role": "creator",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / report.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@E",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "E"
+      },
+      "role": "creator",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / report.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei1@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / site_master.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "site_master.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / member.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / member.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "member.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / member.edit / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / audit.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "audit.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei1 / 操作できる契約(report.edit)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.edit"
+   },
+   "expect": [
+    "A",
+    "C",
+    "E"
+   ]
+  },
+  {
+   "name": "sakusei1 / 操作できる契約(report.view)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "sakusei1",
+    "permission": "report.view"
+   },
+   "expect": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "name": "sakusei2 / report.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@B",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "B"
+      },
+      "role": "creator",
+      "direct": true
+     },
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@D",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "D"
+      },
+      "role": "creator",
+      "direct": true
+     },
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@F",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "F"
+      },
+      "role": "creator",
+      "direct": true
+     },
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / report.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@B",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "B"
+      },
+      "role": "creator",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / report.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@D",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "D"
+      },
+      "role": "creator",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / report.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / report.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@F",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "F"
+      },
+      "role": "creator",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei2@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / site_master.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "site_master.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / member.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / member.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "member.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / member.edit / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / audit.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "audit.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei2 / 操作できる契約(report.edit)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.edit"
+   },
+   "expect": [
+    "B",
+    "D",
+    "F"
+   ]
+  },
+  {
+   "name": "sakusei2 / 操作できる契約(report.view)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "sakusei2",
+    "permission": "report.view"
+   },
+   "expect": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "name": "etsuran / report.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / report.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / report.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / report.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / report.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / report.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / report.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / report.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / report.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / report.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / report.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / report.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / site_master.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / site_master.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / site_master.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / site_master.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / site_master.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "etsuran@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "etsuran / site_master.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / site_master.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "site_master.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / member.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / member.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "member.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / member.edit / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / audit.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "audit.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "etsuran / 操作できる契約(report.edit)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.edit"
+   },
+   "expect": []
+  },
+  {
+   "name": "etsuran / 操作できる契約(report.view)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "etsuran",
+    "permission": "report.view"
+   },
+   "expect": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "name": "sakusei3 / report.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / report.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / report.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / report.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / report.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / report.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / report.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / report.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / report.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / report.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / report.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / report.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "sakusei3@org",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / site_master.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "site_master.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / member.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / member.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "member.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / member.edit / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / audit.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "audit.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "sakusei3 / 操作できる契約(report.edit)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.edit"
+   },
+   "expect": []
+  },
+  {
+   "name": "sakusei3 / 操作できる契約(report.view)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "sakusei3",
+    "permission": "report.view"
+   },
+   "expect": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ]
+  },
+  {
+   "name": "muko / report.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / report.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.view / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.view / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.view / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.view / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.view / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.view / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.view",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.edit / 契約A",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.edit / 契約B",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.edit / 契約C",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "C"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.edit / 契約D",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "D"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.edit / 契約E",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "E"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.edit / 契約F",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.edit",
+    "resource": {
+     "type": "site",
+     "id": "F"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / site_master.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "site_master.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / member.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "member.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / member.create / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "member.create",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / member.edit / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / audit.view / 組織全体",
+   "call": "evaluate",
+   "args": {
+    "user_id": "muko",
+    "permission": "audit.view",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "muko / 操作できる契約(report.edit)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.edit"
+   },
+   "expect": []
+  },
+  {
+   "name": "muko / 操作できる契約(report.view)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "muko",
+    "permission": "report.view"
+   },
+   "expect": []
+  },
+  {
+   "name": "ただ1人の管理者が自分を閲覧にする",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "admin"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    },
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "ただ1人の管理者が自分を無効にする",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "suspended"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "admin"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    },
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "管理者が作成者を無効にする",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "suspended"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "admin"
+   },
+   "expect": []
+  },
+  {
+   "name": "管理者が2人いれば、1人が自分を閲覧にしても管理者は残る(ただし自分の締め出し)",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org-admin",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "default",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "B",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      },
+      {
+       "id": "D",
+       "groups": []
+      },
+      {
+       "id": "E",
+       "groups": []
+      },
+      {
+       "id": "F",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "admin",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei1",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei2",
+       "status": "active"
+      },
+      {
+       "user_id": "etsuran",
+       "status": "active"
+      },
+      {
+       "user_id": "sakusei3",
+       "status": "active"
+      },
+      {
+       "user_id": "muko",
+       "status": "suspended"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "admin@org",
+       "principal": {
+        "type": "user",
+        "id": "admin"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@A",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@C",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "C"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@E",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "E"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@B",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@D",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "D"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@F",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "F"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei2@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei2"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "etsuran@org",
+       "principal": {
+        "type": "user",
+        "id": "etsuran"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei3@org",
+       "principal": {
+        "type": "user",
+        "id": "sakusei3"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@A",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "creator",
+       "scope": {
+        "type": "site",
+        "id": "A"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "muko@org",
+       "principal": {
+        "type": "user",
+        "id": "muko"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      },
+      {
+       "id": "sakusei1@org-admin",
+       "principal": {
+        "type": "user",
+        "id": "sakusei1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "admin",
+       "created_at": "2026-10-29T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "admin"
+   },
+   "expect": [
+    {
+     "code": "self_lockout"
+    }
+   ]
+  }
+ ]
+}

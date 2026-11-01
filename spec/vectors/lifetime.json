@@ -1,0 +1,2564 @@
+{
+ "name": "lifetime",
+ "description": "期限と失効。now と同じ時刻は「過ぎた」。時差を引いて比べる。時刻の形の誤り",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "t",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "s1",
+    "groups": [
+     "g1"
+    ]
+   },
+   {
+    "id": "s2",
+    "groups": [
+     "g1",
+     "g2"
+    ]
+   },
+   {
+    "id": "s3",
+    "groups": [
+     "g2"
+    ]
+   },
+   {
+    "id": "s4",
+    "groups": []
+   }
+  ],
+  "groups": [
+   {
+    "id": "g1"
+   },
+   {
+    "id": "g2"
+   }
+  ],
+  "memberships": [
+   {
+    "user_id": "u1",
+    "status": "active"
+   },
+   {
+    "user_id": "u2",
+    "status": "active"
+   },
+   {
+    "user_id": "u3",
+    "status": "active"
+   },
+   {
+    "user_id": "u4",
+    "status": "active"
+   },
+   {
+    "user_id": "u5",
+    "status": "active"
+   },
+   {
+    "user_id": "u6",
+    "status": "active"
+   },
+   {
+    "user_id": "u7",
+    "status": "suspended"
+   },
+   {
+    "user_id": "u8",
+    "status": "invited"
+   }
+  ],
+  "teams": [],
+  "assignments": [
+   {
+    "id": "a1",
+    "principal": {
+     "type": "user",
+     "id": "u1"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": "2026-11-01T00:00:00Z",
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a2",
+    "principal": {
+     "type": "user",
+     "id": "u2"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": "2026-11-01T00:00:00.000001Z",
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a3",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": "2026-11-01T09:00:00+09:00",
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a4",
+    "principal": {
+     "type": "user",
+     "id": "u4"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": "2026-11-02T00:00:00+09:00",
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a5",
+    "principal": {
+     "type": "user",
+     "id": "u5"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": "2026-10-31T23:59:59-01:00",
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a6",
+    "principal": {
+     "type": "user",
+     "id": "u6"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a7",
+    "principal": {
+     "type": "user",
+     "id": "u1"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site",
+     "id": "s1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "期限が now と同じ(時差違いの同じ時刻)は過ぎた",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "期限が now の1マイクロ秒後は有効",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a2",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "失効が now と同じは失効",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "失効が未来なら有効",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u4",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a4",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "時差 -01:00 の期限は now より後",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u5",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a5",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "期限も失効も null は有効",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a6",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "期限切れの割当は断る理由にも数えない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "生きている割当があれば out_of_scope",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s2"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
+   "name": "now が日付だけ",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "now に時差が無い",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "now が24時",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T24:00:00Z",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "now の時差が +24:00",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+24:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "now の小数が7桁",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00.0000001Z",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "now が60秒",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:60Z",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "うるう年の2月29日は正しい",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2028-02-29T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a6",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "うるう年でない2月29日",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-02-29T09:00:00Z",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "集めた割当の期限が2月30日",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-02-30T00:00:00Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "invalid_time"
+  },
+  {
+   "name": "ほかの人の割当の時刻の誤りは見ない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      },
+      {
+       "user_id": "u2",
+       "status": "active"
+      },
+      {
+       "user_id": "u3",
+       "status": "active"
+      },
+      {
+       "user_id": "u4",
+       "status": "active"
+      },
+      {
+       "user_id": "u5",
+       "status": "active"
+      },
+      {
+       "user_id": "u6",
+       "status": "active"
+      },
+      {
+       "user_id": "u7",
+       "status": "suspended"
+      },
+      {
+       "user_id": "u8",
+       "status": "invited"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "a1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00Z",
+       "revoked_at": "yesterday",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a2",
+       "principal": {
+        "type": "user",
+        "id": "u2"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-11-01T00:00:00.000001Z",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a3",
+       "principal": {
+        "type": "user",
+        "id": "u3"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-01T09:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a4",
+       "principal": {
+        "type": "user",
+        "id": "u4"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": "2026-11-02T00:00:00+09:00",
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a5",
+       "principal": {
+        "type": "user",
+        "id": "u5"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": "2026-10-31T23:59:59-01:00",
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a6",
+       "principal": {
+        "type": "user",
+        "id": "u6"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "a7",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "s1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a6",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  }
+ ]
+}

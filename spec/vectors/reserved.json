@@ -1,0 +1,423 @@
+{
+ "name": "reserved",
+ "description": "予約(collaboration の割当、equipment の範囲、audience、is_tenant_admin)は判定に効かない",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "partner_worker",
+    "rank": 0,
+    "audience": "partner",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "t",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "s1",
+    "groups": [
+     "g1"
+    ]
+   },
+   {
+    "id": "s2",
+    "groups": [
+     "g1",
+     "g2"
+    ]
+   },
+   {
+    "id": "s3",
+    "groups": [
+     "g2"
+    ]
+   },
+   {
+    "id": "s4",
+    "groups": []
+   }
+  ],
+  "groups": [
+   {
+    "id": "g1"
+   },
+   {
+    "id": "g2"
+   }
+  ],
+  "memberships": [
+   {
+    "user_id": "u1",
+    "status": "active"
+   },
+   {
+    "user_id": "u2",
+    "status": "active"
+   },
+   {
+    "user_id": "u3",
+    "status": "active"
+   },
+   {
+    "user_id": "u4",
+    "status": "active"
+   },
+   {
+    "user_id": "u5",
+    "status": "active"
+   },
+   {
+    "user_id": "u6",
+    "status": "active",
+    "is_tenant_admin": true
+   }
+  ],
+  "teams": [],
+  "assignments": [
+   {
+    "id": "a1",
+    "principal": {
+     "type": "collaboration",
+     "id": "c1"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a2",
+    "principal": {
+     "type": "user",
+     "id": "u2"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "equipment",
+     "id": "e1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a3",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site",
+     "id": "s1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a4",
+    "principal": {
+     "type": "user",
+     "id": "u3"
+    },
+    "role": "manager",
+    "scope": {
+     "type": "equipment",
+     "id": "e9"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a5",
+    "principal": {
+     "type": "user",
+     "id": "u4"
+    },
+    "role": "partner_worker",
+    "scope": {
+     "type": "site",
+     "id": "s1"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "a6",
+    "principal": {
+     "type": "group",
+     "id": "u5"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "collaboration の割当は集めない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "equipment の範囲の割当は落とす(組織全体)",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "equipment の範囲の割当は落とす(拠点)",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u2",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "equipment の割当は断る理由にも数えない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u3",
+    "permission": "report.approve",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "audience は判定に使わない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u4",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "a5",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "s1"
+      },
+      "role": "partner_worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "未知の principal の種類は集めない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u5",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "is_tenant_admin は判定に使わない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u6",
+    "permission": "member.edit",
+    "resource": {
+     "type": "org"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  }
+ ]
+}
