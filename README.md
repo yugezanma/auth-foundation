@@ -25,3 +25,82 @@ tools/check.sh
 ```
 
 Python は `python3 -m unittest`、JS は `node --test`(Node 20 以上)。どちらも外部の依存は無い。
+
+## 各アプリでの使い方
+
+部品はパッケージとして配らず、タグの中身を各アプリへ**写す**(理由は [docs/設計.md](docs/設計.md) §6-2)。写しは手で直さない。
+
+### 写す
+
+このリポジトリで、使う版のタグを checkout してから実行する。
+
+```sh
+git checkout v1.0.0
+python3 tools/vendor.py --lang python --dest <アプリの中の置き場所>   # 電力データ集計
+python3 tools/vendor.py --lang js     --dest <アプリの中の置き場所>   # SolarOM
+```
+
+`<置き場所>/auth_foundation/` に次のものができ、写したあとにその場で確かめが流れる。
+
+| ファイル | 中身 |
+|---|---|
+| 部品 | Python 版は `*.py`(パッケージ `auth_foundation`)、JS 版は `auth-foundation.mjs` |
+| `vectors/*.json` | 判定テスト |
+| `VERSION`・`MANIFEST.json` | 写した版、ファイルごとの SHA-256、もとのタグとコミット |
+| `verify_vendor.py` / `verify-vendor.mjs` | 確かめ用のコード(ハッシュの一致と、全部の判定テスト) |
+| `.gitattributes` | 取り込んだリポジトリで git が改行を変えないようにする(変わるとハッシュが合わなくなる) |
+
+### アプリのテストに確かめを入れる
+
+Python(電力データ集計。`<置き場所>` を `sys.path` に入れる):
+
+```python
+from auth_foundation.verify_vendor import verify
+
+def test_auth_foundation_vendor():
+    verify()   # 手で直されていたり、判定テストが通らなければ VendorCheckError
+```
+
+JS(SolarOM。Node のテスト):
+
+```js
+import { verify } from '<置き場所>/auth_foundation/verify-vendor.mjs';
+verify();      // だめなら例外(.problems に一覧)
+```
+
+### 使う
+
+```python
+from auth_foundation import evaluate, permissions_at, sites_with, check_guard, make_audit_event
+
+d = evaluate(CATALOG, snapshot, user_id, "report.edit", {"type": "site", "id": "A"})
+if not d["allowed"]:
+    ...  # d["reason"] は not_member / out_of_scope / no_permission。文言はアプリが決める
+```
+
+```js
+import { evaluate } from './auth_foundation/auth-foundation.mjs';
+const d = evaluate(CATALOG, snapshot, userId, 'report.edit', { type: 'site', id: 's001' });
+```
+
+- `CATALOG`(機能グループとロール)はアプリのソースに書き、アプリのテストで `validate_catalog(CATALOG) == []` を確かめる
+- `snapshot` はアプリのデータベースから作る(形は [spec/vectors.schema.md](spec/vectors.schema.md))
+- 監査ログは `make_audit_event(...)` で作ってから、アプリが保存する
+
+**SolarOM の注意**: `デモアプリ/` はまるごと公開される。写し(`vectors/`・`MANIFEST.json` を含む)は `デモアプリ/` の外のサーバー側の置き場所に置き、画面で使うときは `auth-foundation.mjs` だけを `デモアプリ/` の下へ置く。
+
+### 版を上げる
+
+1. このリポジトリで直し、判定テストを足し、`VERSION`・`CHANGELOG.md`・両方の版の `VERSION` 定数(`python/auth_foundation/__init__.py`・`js/auth-foundation.mjs`)を上げる(番号の決め方は設計.md §6-1)
+2. `tools/check.sh` が通ったらタグ `vX.Y.Z` を付ける
+3. 各アプリで、新しいタグを checkout して写し直す(古い写しは手で直されていなければ置き換わる)
+
+## 判定テストを作り直す
+
+判定テストは `spec/vectors/*.json` が正。生成用のスクリプトが `tools/vectors/` にある。
+
+```sh
+python3 tools/vectors/make_generic.py spec/vectors                  # 汎用の決まり(正解は手で書いてある)
+python3 tools/vectors/make_pda.py spec/vectors                      # 電力データ集計の今の判定
+node tools/vectors/make_solarom.mjs <solar-om のパス> spec/vectors  # SolarOM の perm-data.js を動かして作る
+```
