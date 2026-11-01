@@ -7,7 +7,7 @@ from .catalog import VERBS, validate_catalog
 from .errors import AuthFoundationError
 from .evaluate import check_guard, evaluate, permissions_at, sites_with
 
-__version__ = "1.0.0-dev"
+__version__ = "1.0.0"
 
 __all__ = [
     "AUDIT_ACTIONS", "AUDIT_PATTERNS", "AuthFoundationError", "VERBS", "__version__",

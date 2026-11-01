@@ -2,7 +2,7 @@
 // 設計は docs/設計.md、細かな決まりは spec/vectors.schema.md。Python 版と同じ判定テストを通す。
 // 副作用を持たない関数だけを置く。ES2017 の範囲で書き、ビルドしない。Date・Math.random を使わない。
 
-export const VERSION = '1.0.0-dev';
+export const VERSION = '1.0.0';
 export const VERBS = ['view', 'create', 'edit', 'approve'];
 const REQUIRED_FEATURES = ['member', 'audit'];
 const AUDIENCES = ['internal', 'partner', 'owner'];
