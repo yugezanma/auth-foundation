@@ -110,7 +110,7 @@
 
 - `permissions_at`: `evaluate` と同じ確かめ方(1・2 以外の permission の確かめは無い)。所属が無ければ `{}`。あれば `{ feature: { action: [path, ...] } }` で、権限を持つ機能グループと動詞だけを入れる
 - `sites_with`: 所属が無ければ `[]`。あれば `snapshot.sites` の順で、`evaluate` が許す拠点の ID の配列
-- `check_guard`: `before`・`after` のそれぞれで、有効な所属を持つユーザーのうち `evaluate(guard_permission, {type: "org"})` が許す人を「守る権限を持つ人」とする。違反を次の順に返す
+- `check_guard`: 先に `guard_permission` を `evaluate` の 1 と同じく確かめる(`unknown_permission`)。そのあと `before`・`after` のそれぞれで、有効な所属を持つユーザーのうち `evaluate(guard_permission, {type: "org"})` が許す人を「守る権限を持つ人」とする。違反を次の順に返す
   - `after` で守る権限を持つ人が0人 → `{ "code": "no_admin_left" }`
   - `actor_user_id` が `before` で守る権限を持ち、`after` で持たない → `{ "code": "self_lockout" }`
 
@@ -138,7 +138,7 @@
 
 ### 6-2. `validate_audit_event`
 
-戻り値は誤りの配列。次の順に並べる。
+戻り値は誤りの配列。記録がオブジェクトでなければ `[{ "code": "invalid_type", "field": "event" }]` だけを返す。オブジェクトなら次の順に並べる。
 
 1. 上の表の順に項目ごと:
    - 必須なのに無い・null → `{ "code": "missing_field", "field": f }`
@@ -150,7 +150,7 @@
 
 ### 6-3. `make_audit_event`
 
-`fields` から、表の11項目をすべて持つ記録を作る。無い任意の項目は null、`actor_tenant_id` が無ければ `host_tenant_id` と同じにする。作った記録を `validate_audit_event` で確かめ、誤りがあれば `invalid_audit_event` を投げる。
+`fields` から、表の11項目をすべて持つ記録を作る。無い任意の項目は null、`actor_tenant_id` が無ければ `host_tenant_id` と同じにする。`fields` にある表に無い項目もそのまま入れる。作った記録を `validate_audit_event` で確かめ、誤りがあれば `invalid_audit_event` を投げる(誤りの配列をエラーに添える。Python は `.detail`、JS は `.detail`)。`fields` がオブジェクトでなくても `invalid_audit_event`。
 
 ### 6-4. `audit_retention`
 

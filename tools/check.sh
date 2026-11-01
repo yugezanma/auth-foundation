@@ -3,6 +3,6 @@
 set -e
 cd "$(dirname "$0")/.."
 echo "== Python"
-python3 -m unittest discover -s python/tests -t python
+python3 -m unittest discover -s python/tests
 echo "== JS"
 node --test js/test/
