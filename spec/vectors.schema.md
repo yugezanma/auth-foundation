@@ -39,13 +39,15 @@
 | `validate_audit_event` | `event` | `validate_audit_event(event)` | `validateAuditEvent(event)` |
 | `audit_retention` | `action` | `audit_retention(action)` | `auditRetention(action)` |
 
+**値の形**: 配列であるべき値(`sites`・`groups`・チームの `members`・拠点の `groups`・動詞の一覧など)が配列でなければ、空の配列とみなす(文字列を部分一致で読まない)。オブジェクトであるべき値がオブジェクトでなければ、空のオブジェクトとみなす。**整数**は、値が整数の数(`1` も `1.0` も整数。JS では見分けられないため)。真偽値は整数でない。
+
 エラーは、Python は `AuthFoundationError`(`.code` にエラーの種類)、JS は `AuthFoundationError`(`Error` を継ぐ。`.code`)を投げる。
 
 ## 2. カタログ(`validate_catalog`)
 
 戻り値は誤りの配列(誤りが無ければ空)。誤りは `{ "code": ..., (場所) }` の形で、次の順に並べる。
 
-1. `features` の機能グループごと(書いた順)、動詞ごと(書いた順):
+1. `features` の機能グループごと(書いた順)。動詞の一覧が配列でなければ → `{ "code": "invalid_list", "feature": f }`。配列なら動詞ごと(書いた順):
    - 動詞が `view` / `create` / `edit` / `approve` 以外 → `{ "code": "invalid_action", "feature": f, "action": a }`
    - 同じ動詞が2回 → `{ "code": "duplicate_action", "feature": f, "action": a }`
 2. `member`・`audit` の順に、`features` に無ければ → `{ "code": "missing_required_feature", "feature": f }`
@@ -53,7 +55,7 @@
    - key がそれより前のロールと同じ → `{ "code": "duplicate_role", "role": key }`
    - `audience` が `internal` / `partner` / `owner` 以外 → `{ "code": "invalid_audience", "role": key }`
    - `rank` が整数でない → `{ "code": "invalid_rank", "role": key }`
-   - `perms` の機能グループごと(書いた順): `features` に無い → `{ "code": "unknown_feature", "role": key, "feature": f }`。あれば動詞ごと(書いた順)に、その機能グループに無い → `{ "code": "unknown_action", "role": key, "feature": f, "action": a }`
+   - `perms` の機能グループごと(書いた順): `features` に無い → `{ "code": "unknown_feature", "role": key, "feature": f }`。動詞の一覧が配列でない → `{ "code": "invalid_list", "role": key, "feature": f }`。配列なら動詞ごと(書いた順)に、その機能グループに無い → `{ "code": "unknown_action", "role": key, "feature": f, "action": a }`
 
 ## 3. 判定(`evaluate`)
 
@@ -145,7 +147,7 @@
    - 型が違う(必須の文字列が空も含む) → `{ "code": "invalid_type", "field": f }`
    - `created_at` が時刻の形でない → `{ "code": "invalid_time", "field": "created_at" }`
    - `action` が `audit-actions.json` の `actions` に無く、`patterns` のどれにも当たらない → `{ "code": "unknown_action", "field": "action" }`
-2. `before`・`after` の順に、中を深さ優先で(オブジェクトはキーの順、配列は番号の順)見て、秘密のキーがあれば → `{ "code": "secret_field", "field": "after.user.password_hash" }`(配列の番号も `.0` の形で入れる)。秘密のキーとは、小文字にした名前が `password`・`passwd`・`secret`・`token`・`session`・`otp` のどれかを含むもの、または `code` そのもの
+2. `before`・`after` の順に、中を深さ優先で(オブジェクトはキーの順、配列は番号の順)見て、秘密のキーがあれば → `{ "code": "secret_field", "field": "after.user.password_hash" }`(配列の番号も `.0` の形で入れる)。秘密のキーとは、名前を単語に分けたとき(大文字の前で区切り(`passwordHash` → `password`・`Hash`)、小文字にして英数字以外で区切る)、どれかの単語が `password`・`passwd`・`pwd`・`secret`・`token`・`session`・`otp`・`code` か、その語に `s` を付けたものであるもの。`verification_code`・`access-tokens`・`SessionID` は秘密、`footprint`・`barcode`・`tokenless` は秘密でない。業務の ID に `site_code` のような名前を使うと秘密とみなされるので、記録では `site_id` などにする
 3. 表に無い項目(書いた順) → `{ "code": "unknown_field", "field": f }`
 
 ### 6-3. `make_audit_event`

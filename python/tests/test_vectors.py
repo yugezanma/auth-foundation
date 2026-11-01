@@ -41,6 +41,12 @@ class ConsistencyTest(unittest.TestCase):
                          list(AUDIT_ACTIONS))
         self.assertEqual([(p["pattern"], p["required"], p["retention"]) for p in spec["patterns"]], list(PATTERNS))
 
+    def test_sync_audit_actions_is_up_to_date(self):
+        import subprocess
+        r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "sync_audit_actions.py"), "--check"],
+                           capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

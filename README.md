@@ -17,6 +17,7 @@
 | `js/auth-foundation.mjs` | JS 版(ES モジュール1つ。依存なし) |
 | `tools/vendor.py` | 各アプリへ写すスクリプト |
 | `tools/check.sh` | 両方のテストをまとめて流す |
+| `tools/sync_audit_actions.py` | `spec/audit-actions.json` の操作名を両方の版へ書き込む |
 
 ## テスト
 
@@ -49,6 +50,8 @@ python3 tools/vendor.py --lang js     --dest <アプリの中の置き場所>   
 | `VERSION`・`MANIFEST.json` | 写した版、ファイルごとの SHA-256、もとのタグとコミット |
 | `verify_vendor.py` / `verify-vendor.mjs` | 確かめ用のコード(ハッシュの一致と、全部の判定テスト) |
 | `.gitattributes` | 取り込んだリポジトリで git が改行を変えないようにする(変わるとハッシュが合わなくなる) |
+
+確かめでは、OS が作るファイル(`.DS_Store`・`Thumbs.db`・`desktop.ini`)と Python のキャッシュ(`__pycache__`・`*.pyc`)は見ない。
 
 ### アプリのテストに確かめを入れる
 
@@ -91,9 +94,9 @@ const d = evaluate(CATALOG, snapshot, userId, 'report.edit', { type: 'site', id:
 
 ### 版を上げる
 
-1. このリポジトリで直し、判定テストを足し、`VERSION`・`CHANGELOG.md`・両方の版の `VERSION` 定数(`python/auth_foundation/__init__.py`・`js/auth-foundation.mjs`)を上げる(番号の決め方は設計.md §6-1)
+1. このリポジトリで直し、判定テストを足し(監査ログの操作名を変えたら `spec/audit-actions.json` を直して `python3 tools/sync_audit_actions.py` で両方の版へ書き込む)、`VERSION`・`CHANGELOG.md`・両方の版の `VERSION` 定数(`python/auth_foundation/__init__.py`・`js/auth-foundation.mjs`)を上げる(番号の決め方は設計.md §6-1)
 2. `tools/check.sh` が通ったらタグ `vX.Y.Z` を付ける
-3. 各アプリで、新しいタグを checkout して写し直す(古い写しは手で直されていなければ置き換わる)
+3. 各アプリで、新しいタグを checkout して写し直す(古い写しは手で直されていなければ置き換わる。新しい写しの確かめが通らなければ、古い写しはそのまま残る)
 
 ## 判定テストを作り直す
 

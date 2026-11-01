@@ -182,6 +182,30 @@
    "expect": []
   },
   {
+   "name": "整数の値の小数(2.0)は整数とみなす",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": 2.0,
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "name": "B"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
    "name": "登録の無いメールアドレスのログイン失敗",
    "call": "validate_audit_event",
    "args": {
@@ -481,7 +505,7 @@
      "after": {
       "user": {
        "password_hash": "h",
-       "Site_Code": "A"
+       "Site_Id": "A"
       },
       "items": [
        {
@@ -527,7 +551,7 @@
    ]
   },
   {
-   "name": "名前に otp・secret・passwd を含むキー",
+   "name": "単語に分けて見る(_・-・大文字の境目)。単語の頭が秘密の語なら秘密",
    "call": "validate_audit_event",
    "args": {
     "event": {
@@ -544,7 +568,15 @@
      "after": {
       "otp_sent": true,
       "client_secret": "x",
-      "old_passwd": "y"
+      "old_passwd": "y",
+      "verification_code": "1",
+      "passwordHash": "h",
+      "access-tokens": [
+       "t"
+      ],
+      "new_pwd": "p",
+      "SessionID": "s",
+      "site_code": "A"
      },
      "ip_address": "127.0.0.1",
      "created_at": "2026-11-01T09:00:00Z"
@@ -562,8 +594,60 @@
     {
      "code": "secret_field",
      "field": "after.old_passwd"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.verification_code"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.passwordHash"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.access-tokens"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.new_pwd"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.SessionID"
+    },
+    {
+     "code": "secret_field",
+     "field": "after.site_code"
     }
    ]
+  },
+  {
+   "name": "秘密の語を単語の途中に含むだけなら秘密でない",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "member.updated",
+     "target_type": "user",
+     "target_id": "u2",
+     "before": {
+      "name": "A"
+     },
+     "after": {
+      "footprint_kwh": 1,
+      "hotplate": 2,
+      "barcode": "x",
+      "tokenless": null,
+      "unsecret": 1
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
   },
   {
    "name": "ログインの記録は13か月",

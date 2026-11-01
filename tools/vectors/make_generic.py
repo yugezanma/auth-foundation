@@ -106,6 +106,14 @@ files["catalog"] = {
              {"catalog": {"features": {"report": ["view"]}, "roles": []}},
              [{"code": "missing_required_feature", "feature": "member"},
               {"code": "missing_required_feature", "feature": "audit"}]),
+        call("動詞の一覧が配列でない", "validate_catalog", {"catalog": {
+            "features": {"report": "view,edit", "member": ["view"], "audit": ["view"]},
+            "roles": [{"key": "r", "rank": 1, "audience": "internal", "perms": {"member": "view"}}]}},
+             [{"code": "invalid_list", "feature": "report"},
+              {"code": "invalid_list", "role": "r", "feature": "member"}]),
+        call("整数の値の小数(1.0)は整数とみなす(JS では 1.0 と 1 を見分けられないため)", "validate_catalog", {"catalog": {
+            "features": {"member": ["view"], "audit": ["view"]},
+            "roles": [{"key": "r", "rank": 1.0, "audience": "internal", "perms": {}}]}}, []),
         call("誤りをまとめて決まった順に返す", "validate_catalog", {"catalog": bad}, [
             {"code": "invalid_action", "feature": "report", "action": "delete"},
             {"code": "duplicate_action", "feature": "report", "action": "view"},
@@ -378,6 +386,17 @@ files["errors"] = {
         ev("ほかの人の割当の誤りは見ない", "u10", "report.view", S("s1"), no("no_permission")),
         ev("拠点の ID が重複", "u10", "report.view", S("s1"), error="duplicate_site",
            snapshot=snap([], sites=[{"id": "s1", "groups": []}, {"id": "s1", "groups": []}])),
+        ev("ロールの動詞の一覧が文字列なら何も許さない(部分一致しない)", "u10", "report.create", S("s1"), no("no_permission"),
+           catalog={"features": CAT["features"], "roles": [{"key": "w", "rank": 1, "audience": "internal", "perms": {"report": "view,create"}}]},
+           snapshot=snap([A("x1", "user", "u10", "w", "org")], memberships=[{"user_id": "u10", "status": "active"}])),
+        ev("カタログの動詞の一覧が文字列なら、その権限は未知", "u10", "report.view", S("s1"), error="unknown_permission",
+           catalog={"features": {"report": "view", "member": ["view"], "audit": ["view"]}, "roles": []}),
+        ev("チームのメンバーが文字列なら誰も入っていない", "u1", "report.view", S("s1"), no("no_permission"),
+           snapshot=snap([A("x1", "team", "tt", "viewer", "org")], memberships=[{"user_id": "u1", "status": "active"}],
+                         teams=[{"id": "tt", "members": "u1u2"}])),
+        ev("拠点のグループが文字列ならどのグループにも属さない", "u1", "report.view", S("s1"), no("out_of_scope"),
+           snapshot=snap([A("x1", "user", "u1", "viewer", "site_group", "g1")], memberships=[{"user_id": "u1", "status": "active"}],
+                         sites=[{"id": "s1", "groups": "g1"}])),
         call("permissions_at も同じエラー", "permissions_at", {"user_id": "u1", "resource": S("s1")}, error="unknown_role"),
         call("permissions_at の未知の拠点", "permissions_at", {"user_id": "u10", "resource": S("s9")}, error="unknown_site"),
         call("sites_with の未知の権限", "sites_with", {"user_id": "u10", "permission": "x.view"}, error="unknown_permission"),
@@ -494,6 +513,7 @@ files["audit"] = {
         ve("正しい記録", EV_FULL, []),
         ve("任意の項目は無くてよい", EV_MIN | {"actor_tenant_id": "t"}, []),
         ve("id は整数でもよい", withv(EV_FULL, id=12), []),
+        ve("整数の値の小数(2.0)は整数とみなす", withv(EV_FULL, id=2.0), []),
         ve("登録の無いメールアドレスのログイン失敗", {
             "host_tenant_id": "t", "actor_user_id": None, "actor_tenant_id": "t", "action": "auth.login.failed",
             "target_type": "email", "target_id": "nobody@example.com", "after": {"reason": "wrong_password"},
@@ -513,7 +533,7 @@ files["audit"] = {
         ve("予約の操作名", withv(EV_FULL, action="report.published"), []),
         ve("秘密のキー(入れ子・配列・code)と、表に無い項目", withv(
             EV_FULL, before={"session_id": "s", "name": "A"},
-            after={"user": {"password_hash": "h", "Site_Code": "A"}, "items": [{"ok": 1}, {"Token": "t"}], "code": "123456"},
+            after={"user": {"password_hash": "h", "Site_Id": "A"}, "items": [{"ok": 1}, {"Token": "t"}], "code": "123456"},
             extra="x", note=None), [
             {"code": "secret_field", "field": "before.session_id"},
             {"code": "secret_field", "field": "after.user.password_hash"},
@@ -521,10 +541,20 @@ files["audit"] = {
             {"code": "secret_field", "field": "after.code"},
             {"code": "unknown_field", "field": "extra"},
             {"code": "unknown_field", "field": "note"}]),
-        ve("名前に otp・secret・passwd を含むキー", withv(EV_FULL, after={"otp_sent": True, "client_secret": "x", "old_passwd": "y"}), [
+        ve("単語に分けて見る(_・-・大文字の境目)。単語の頭が秘密の語なら秘密", withv(EV_FULL, after={
+            "otp_sent": True, "client_secret": "x", "old_passwd": "y", "verification_code": "1", "passwordHash": "h",
+            "access-tokens": ["t"], "new_pwd": "p", "SessionID": "s", "site_code": "A"}), [
             {"code": "secret_field", "field": "after.otp_sent"},
             {"code": "secret_field", "field": "after.client_secret"},
-            {"code": "secret_field", "field": "after.old_passwd"}]),
+            {"code": "secret_field", "field": "after.old_passwd"},
+            {"code": "secret_field", "field": "after.verification_code"},
+            {"code": "secret_field", "field": "after.passwordHash"},
+            {"code": "secret_field", "field": "after.access-tokens"},
+            {"code": "secret_field", "field": "after.new_pwd"},
+            {"code": "secret_field", "field": "after.SessionID"},
+            {"code": "secret_field", "field": "after.site_code"}]),
+        ve("秘密の語を単語の途中に含むだけなら秘密でない", withv(EV_FULL, after={
+            "footprint_kwh": 1, "hotplate": 2, "barcode": "x", "tokenless": None, "unsecret": 1}), []),
         call("ログインの記録は13か月", "audit_retention", {"action": "auth.login.failed"}, "13_months"),
         call("ユーザー管理は無期限", "audit_retention", {"action": "member.created"}, "indefinite"),
         call("拠点の追加は無期限", "audit_retention", {"action": "site.created"}, "indefinite"),

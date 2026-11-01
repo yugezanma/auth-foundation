@@ -93,12 +93,39 @@ class VendorTest(unittest.TestCase):
         os.makedirs(os.path.join(self.dest, "auth_foundation", "__pycache__"), exist_ok=True)
         self.assertEqual(self.vendor("python", "--allow-dev").returncode, 0)
 
+    def test_failed_verification_keeps_previous_copy(self):
+        self.assertEqual(self.vendor("python", "--allow-dev").returncode, 0)
+        # 判定テストの正解を壊した版を写そうとする
+        path = os.path.join(self.repo, "spec", "vectors", "basic.json")
+        with open(path, encoding="utf-8") as f:
+            doc = json.load(f)
+        doc["cases"][0]["expect"]["allowed"] = False
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(doc, f, ensure_ascii=False)
+        r = self.vendor("python", "--allow-dev")
+        self.assertEqual(r.returncode, 2)
+        self.assertIn("前の写しはそのまま", r.stderr)
+        self.assertEqual(self.verify_python().returncode, 0)
+        self.assertEqual(os.listdir(self.dest), ["auth_foundation"])
+
+    def test_ignores_os_files(self):
+        self.assertEqual(self.vendor("python", "--allow-dev").returncode, 0)
+        for n in (".DS_Store", "Thumbs.db", "desktop.ini"):
+            with open(os.path.join(self.dest, "auth_foundation", "vectors", n), "w") as f:
+                f.write("x")
+        self.assertEqual(self.verify_python().returncode, 0)
+        self.assertEqual(self.vendor("python", "--allow-dev").returncode, 0)
+
     @unittest.skipUnless(HAS_NODE, "node が無い")
     def test_js(self):
         self.assertEqual(self.vendor("js", "--allow-dev").returncode, 0)
         root = os.path.join(self.dest, "auth_foundation")
         self.assertEqual(sorted(os.listdir(root)),
                          [".gitattributes", "MANIFEST.json", "VERSION", "auth-foundation.mjs", "vectors", "verify-vendor.mjs"])
+        r = run("node", os.path.join(root, "verify-vendor.mjs"))
+        self.assertEqual(r.returncode, 0, r.stdout)
+        with open(os.path.join(root, ".DS_Store"), "w") as f:
+            f.write("x")
         r = run("node", os.path.join(root, "verify-vendor.mjs"))
         self.assertEqual(r.returncode, 0, r.stdout)
         with open(os.path.join(root, "auth-foundation.mjs"), "a", encoding="utf-8") as f:

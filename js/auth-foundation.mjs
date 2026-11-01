@@ -41,7 +41,7 @@ function daysFromCivil(y, m, d) {
   return era * 146097 + doe - 719468;
 }
 // 時刻を [秒, マイクロ秒] にする。形が違えば null。
-export function parseTime(value) {
+function parseTime(value) {
   if (typeof value !== 'string') return null;
   const m = TIME_RE.exec(value);
   if (!m) return null;
@@ -69,10 +69,11 @@ function later(a, b) { return a[0] > b[0] || (a[0] === b[0] && a[1] > b[1]); }
 // ==================== カタログ(spec §2) ====================
 export function validateCatalog(catalog) {
   const out = [];
-  const features = get(catalog, 'features') || {};
+  const features = isObj(get(catalog, 'features')) ? catalog.features : {};
   Object.keys(features).forEach(function (f) {
+    if (!Array.isArray(features[f])) { out.push({ code: 'invalid_list', feature: f }); return; }
     const seen = [];
-    list(features[f]).forEach(function (a) {
+    features[f].forEach(function (a) {
       if (VERBS.indexOf(a) < 0) out.push({ code: 'invalid_action', feature: f, action: a });
       else if (seen.indexOf(a) >= 0) out.push({ code: 'duplicate_action', feature: f, action: a });
       seen.push(a);
@@ -88,10 +89,11 @@ export function validateCatalog(catalog) {
     keys.push(key);
     if (AUDIENCES.indexOf(get(r, 'audience')) < 0) out.push({ code: 'invalid_audience', role: key });
     if (!Number.isInteger(get(r, 'rank'))) out.push({ code: 'invalid_rank', role: key });
-    const perms = get(r, 'perms') || {};
+    const perms = isObj(get(r, 'perms')) ? r.perms : {};
     Object.keys(perms).forEach(function (f) {
       if (!own(features, f)) { out.push({ code: 'unknown_feature', role: key, feature: f }); return; }
-      list(perms[f]).forEach(function (a) {
+      if (!Array.isArray(perms[f])) { out.push({ code: 'invalid_list', role: key, feature: f }); return; }
+      perms[f].forEach(function (a) {
         if (!has(features[f], a)) out.push({ code: 'unknown_action', role: key, feature: f, action: a });
       });
     });
@@ -105,8 +107,8 @@ function parsePermission(catalog, permission) {
     throw new AuthFoundationError('unknown_permission', permission);
   }
   const parts = permission.split('.');
-  const features = get(catalog, 'features') || {};
-  if (!own(features, parts[0]) || !has(features[parts[0]], parts[1])) {
+  const features = get(catalog, 'features');
+  if (!isObj(features) || !own(features, parts[0]) || !has(features[parts[0]], parts[1])) {
     throw new AuthFoundationError('unknown_permission', permission);
   }
   return parts;
@@ -122,77 +124,89 @@ function parseResource(resource) {
   throw new AuthFoundationError('invalid_resource', resource);
 }
 
-// 1人分の判定の下ごしらえ。所属・生きている割当を一度だけ求める。
-function Context(catalog, snapshot, userId, resource) {
-  const now = requireTime(get(snapshot, 'now'));
-  const sites = new Map();
+// スナップショット全体の下ごしらえ(拠点・所属・ロール・グループ・チーム)。1回だけ作って使い回す。
+function Prepared(catalog, snapshot) {
+  this.now = requireTime(get(snapshot, 'now'));
+  const sites = this.sites = new Map();
   list(get(snapshot, 'sites')).forEach(function (s) {
     const id = get(s, 'id');
     if (sites.has(id)) throw new AuthFoundationError('duplicate_site', id);
     sites.set(id, list(get(s, 'groups')).slice());
   });
-  this.sites = sites;
-  if (resource && resource[0] === 'site' && !sites.has(resource[1])) {
-    throw new AuthFoundationError('unknown_site', resource[1]);
-  }
-  let status = null;
-  const seen = new Set();
+  const status = this.status = new Map();
   list(get(snapshot, 'memberships')).forEach(function (m) {
     const uid = get(m, 'user_id');
-    if (seen.has(uid)) throw new AuthFoundationError('duplicate_membership', uid);
-    seen.add(uid);
-    if (uid === userId) status = get(m, 'status');
+    if (status.has(uid)) throw new AuthFoundationError('duplicate_membership', uid);
+    status.set(uid, get(m, 'status'));
   });
-  this.member = status === 'active';
-  this.alive = [];
-  if (!this.member) return;
-  const roles = new Map();
+  const roles = this.roles = new Map();
   list(get(catalog, 'roles')).forEach(function (r) {
-    if (!roles.has(get(r, 'key'))) roles.set(get(r, 'key'), get(r, 'perms') || {});
+    if (!roles.has(get(r, 'key'))) roles.set(get(r, 'key'), isObj(get(r, 'perms')) ? r.perms : {});
   });
-  const groups = new Set(list(get(snapshot, 'groups')).map(function (g) { return get(g, 'id'); }));
-  const teams = new Map();
+  this.groups = new Set(list(get(snapshot, 'groups')).map(function (g) { return get(g, 'id'); }));
+  const teams = this.teams = new Map();
   list(get(snapshot, 'teams')).forEach(function (t) {
     if (!teams.has(get(t, 'id'))) teams.set(get(t, 'id'), list(get(t, 'members')));
   });
+  this.assignments = list(get(snapshot, 'assignments'));
+}
+
+Prepared.prototype.checkSite = function (resource) {
+  if (resource[0] === 'site' && !this.sites.has(resource[1])) throw new AuthFoundationError('unknown_site', resource[1]);
+};
+
+Prepared.prototype.activeUsers = function () {
+  const out = [];
+  this.status.forEach(function (st, uid) { if (st === 'active') out.push(uid); });
+  return out;
+};
+
+// 1人分の判定。生きている割当を一度だけ求める。
+function Context(prep, userId) {
+  this.prep = prep;
+  this.sites = prep.sites;
+  this.member = prep.status.get(userId) === 'active';
+  this.alive = [];
+  if (!this.member) return;
   const self = this;
-  list(get(snapshot, 'assignments')).forEach(function (a) {
-    const p = get(a, 'principal') || {};
+  prep.assignments.forEach(function (a) {
+    const p = get(a, 'principal');
     let team;
     if (get(p, 'type') === 'user' && get(p, 'id') === userId) team = null;
-    else if (get(p, 'type') === 'team' && teams.has(get(p, 'id')) && teams.get(get(p, 'id')).indexOf(userId) >= 0) team = get(p, 'id');
+    else if (get(p, 'type') === 'team' && prep.teams.has(get(p, 'id')) && prep.teams.get(get(p, 'id')).indexOf(userId) >= 0) team = get(p, 'id');
     else return;
-    const e = self.check(a, roles, groups);
+    const e = self.check(a);
     e.team = team;
     // 両方を先に読む(片方で落ちても、もう片方の形の誤りを見逃さない)
     const ts = ['expires_at', 'revoked_at'].filter(function (k) { return !isNil(get(a, k)); })
       .map(function (k) { return requireTime(a[k]); });
-    const live = ts.every(function (t) { return later(t, now); });
+    const live = ts.every(function (t) { return later(t, prep.now); });
     if (live && e.scopeType !== 'equipment') self.alive.push(e);
   });
 }
 
-Context.prototype.check = function (a, roles, groups) {
+Context.prototype.check = function (a) {
+  const roles = this.prep.roles;
   const role = get(a, 'role');
   if (!roles.has(role)) throw new AuthFoundationError('unknown_role', role);
-  const scope = get(a, 'scope') || {};
+  const scope = get(a, 'scope');
   const st = get(scope, 'type'), sid = get(scope, 'id');
   if (SCOPE_TYPES.indexOf(st) < 0) throw new AuthFoundationError('invalid_scope', st);
-  this.checkTarget(st, sid, groups);
+  this.checkTarget(st, sid);
   const self = this;
   const excl = list(get(a, 'exclusions')).map(function (x) {
     const t = get(x, 'type'), i = get(x, 'id');
     if (EXCLUSION_TYPES.indexOf(t) < 0) throw new AuthFoundationError('invalid_exclusion', t);
-    self.checkTarget(t, i, groups);
+    self.checkTarget(t, i);
     return [t, i];
   });
   return { assignmentId: get(a, 'id'), scopeType: st, scopeId: st === 'org' ? null : sid,
     exclusions: excl, role: role, perms: roles.get(role), team: null };
 };
 
-Context.prototype.checkTarget = function (t, i, groups) {
+Context.prototype.checkTarget = function (t, i) {
   if (t === 'site' && !this.sites.has(i)) throw new AuthFoundationError('unknown_site', i);
-  if (t === 'site_group' && !groups.has(i)) throw new AuthFoundationError('unknown_group', i);
+  if (t === 'site_group' && !this.prep.groups.has(i)) throw new AuthFoundationError('unknown_group', i);
 };
 
 Context.prototype.reaches = function (e, resource) {
@@ -214,6 +228,11 @@ Context.prototype.paths = function (f, a, resource) {
   return this.alive.filter(function (e) { return grants(e, f, a) && self.reaches(e, resource); }).map(toPath);
 };
 
+Context.prototype.allows = function (f, a, resource) {
+  const self = this;
+  return this.member && this.alive.some(function (e) { return grants(e, f, a) && self.reaches(e, resource); });
+};
+
 Context.prototype.decide = function (f, a, resource) {
   if (!this.member) return { allowed: false, reason: 'not_member', paths: [] };
   const ps = this.paths(f, a, resource);
@@ -231,16 +250,20 @@ function toPath(e) {
 export function evaluate(catalog, snapshot, userId, permission, resource) {
   const p = parsePermission(catalog, permission);
   const res = parseResource(resource);
-  return new Context(catalog, snapshot, userId, res).decide(p[0], p[1], res);
+  const prep = new Prepared(catalog, snapshot);
+  prep.checkSite(res);
+  return new Context(prep, userId).decide(p[0], p[1], res);
 }
 
 // その対象で持つ権限すべてと経路。{ feature: { action: [path, ...] } }
 export function permissionsAt(catalog, snapshot, userId, resource) {
   const res = parseResource(resource);
-  const ctx = new Context(catalog, snapshot, userId, res);
+  const prep = new Prepared(catalog, snapshot);
+  prep.checkSite(res);
+  const ctx = new Context(prep, userId);
   const out = {};
   if (!ctx.member) return out;
-  const features = get(catalog, 'features') || {};
+  const features = isObj(get(catalog, 'features')) ? catalog.features : {};
   Object.keys(features).forEach(function (f) {
     list(features[f]).forEach(function (a) {
       const ps = ctx.paths(f, a, res);
@@ -253,10 +276,9 @@ export function permissionsAt(catalog, snapshot, userId, resource) {
 // その権限が届く拠点の ID の配列(snapshot.sites の順)
 export function sitesWith(catalog, snapshot, userId, permission) {
   const p = parsePermission(catalog, permission);
-  const ctx = new Context(catalog, snapshot, userId, null);
-  if (!ctx.member) return [];
+  const ctx = new Context(new Prepared(catalog, snapshot), userId);
   const out = [];
-  ctx.sites.forEach(function (_, sid) { if (ctx.paths(p[0], p[1], ['site', sid]).length) out.push(sid); });
+  ctx.sites.forEach(function (_, sid) { if (ctx.allows(p[0], p[1], ['site', sid])) out.push(sid); });
   return out;
 }
 
@@ -264,13 +286,8 @@ export function sitesWith(catalog, snapshot, userId, permission) {
 export function checkGuard(catalog, before, after, actorUserId, guardPermission) {
   const p = parsePermission(catalog, guardPermission === undefined ? 'member.edit' : guardPermission);
   function holders(snapshot) {
-    const out = new Set();
-    list(get(snapshot, 'memberships')).forEach(function (m) {
-      const uid = get(m, 'user_id');
-      if (get(m, 'status') === 'active'
-        && new Context(catalog, snapshot, uid, null).decide(p[0], p[1], ['org', null]).allowed) out.add(uid);
-    });
-    return out;
+    const prep = new Prepared(catalog, snapshot);
+    return new Set(prep.activeUsers().filter(function (uid) { return new Context(prep, uid).allows(p[0], p[1], ['org', null]); }));
   }
   const hb = holders(before), ha = holders(after);
   const out = [];
@@ -280,6 +297,7 @@ export function checkGuard(catalog, before, after, actorUserId, guardPermission)
 }
 
 // ==================== 監査ログ(spec §6) ====================
+// >>> ここから下は tools/sync_audit_actions.py が spec/audit-actions.json から書く(手で直さない)
 // spec/audit-actions.json と同じ一覧(テストで突き合わせる)。[名前, 必須か, 保存期間, 予約か]
 export const AUDIT_ACTIONS = [
   ["auth.login.succeeded", true, "13_months", false],
@@ -318,6 +336,7 @@ export const AUDIT_PATTERNS = [
   ["^[a-z][a-z0-9_]*\\.(archived|unarchived)$", true, "indefinite"],
   ["^app(\\.[a-z][a-z0-9_]*)+$", false, "13_months"]
 ];
+// <<< ここまで
 const BY_NAME = new Map(AUDIT_ACTIONS.map(function (a) { return [a[0], a]; }));
 const COMPILED = AUDIT_PATTERNS.map(function (p) { return [new RegExp(p[0]), p[1], p[2]]; });
 const FIELDS = [
@@ -327,7 +346,7 @@ const FIELDS = [
   ['ip_address', false, 'str'], ['created_at', true, 'time'],
 ];
 const FIELD_NAMES = FIELDS.map(function (f) { return f[0]; });
-const SECRET_WORDS = ['password', 'passwd', 'secret', 'token', 'session', 'otp'];
+const SECRET_WORDS = ['password', 'passwd', 'pwd', 'secret', 'token', 'session', 'otp', 'code'];
 
 function lookupAction(action) {
   if (typeof action !== 'string') return null;
@@ -346,8 +365,11 @@ export function auditRetention(action) {
 }
 
 function isSecret(key) {
-  const k = String(key).toLowerCase();
-  return k === 'code' || SECRET_WORDS.some(function (w) { return k.indexOf(w) >= 0; });
+  // 単語に分ける: 大文字の前で区切り、小文字にして英数字以外で区切る。単語が秘密の語かその複数形なら秘密
+  const words = String(key).replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase().split(/[^a-z0-9]+/);
+  return words.some(function (w) {
+    return SECRET_WORDS.indexOf(w) >= 0 || (w.slice(-1) === 's' && SECRET_WORDS.indexOf(w.slice(0, -1)) >= 0);
+  });
 }
 
 function scan(value, prefix, out) {

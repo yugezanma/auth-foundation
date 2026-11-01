@@ -75,14 +75,18 @@ export function runVectors(dir) {
 
 function sha256(file) { return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex'); }
 
+// OS や Python が勝手に作るものは確かめの対象にしない(Python 版と同じ)
+const IGNORED_DIRS = ['__pycache__'];
+const IGNORED_NAMES = ['.DS_Store', 'Thumbs.db', 'desktop.ini'];
+
 function listFiles(root) {
   const out = [];
   (function walk(d) {
     fs.readdirSync(d, { withFileTypes: true }).sort(function (a, b) { return a.name < b.name ? -1 : a.name > b.name ? 1 : 0; })
       .forEach(function (e) {
         const p = path.join(d, e.name);
-        if (e.isDirectory()) walk(p);
-        else out.push(path.relative(root, p).split(path.sep).join('/'));
+        if (e.isDirectory()) { if (IGNORED_DIRS.indexOf(e.name) < 0) walk(p); }
+        else if (IGNORED_NAMES.indexOf(e.name) < 0 && !e.name.endsWith('.pyc')) out.push(path.relative(root, p).split(path.sep).join('/'));
       });
   })(root);
   return out;

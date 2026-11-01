@@ -18,6 +18,7 @@ from . import (AuthFoundationError, __version__, audit_retention, check_guard, e
 HERE = os.path.dirname(os.path.abspath(__file__))
 IGNORED_DIRS = ("__pycache__",)
 IGNORED_SUFFIXES = (".pyc",)
+IGNORED_NAMES = (".DS_Store", "Thumbs.db", "desktop.ini")  # OS が勝手に作るファイル(JS 版と同じ)
 
 
 class VendorCheckError(Exception):
@@ -111,7 +112,7 @@ def list_files(root):
     for d, dirs, files in os.walk(root):
         dirs[:] = sorted(x for x in dirs if x not in IGNORED_DIRS)
         for n in sorted(files):
-            if n.endswith(IGNORED_SUFFIXES):
+            if n.endswith(IGNORED_SUFFIXES) or n in IGNORED_NAMES:
                 continue
             out.append(os.path.relpath(os.path.join(d, n), root).replace(os.sep, "/"))
     return out

@@ -1,9 +1,11 @@
 """監査ログの形(docs/設計.md §4、spec/vectors.schema.md §6)。保存・検索は各アプリで行う。"""
 import re
 
+from ._shape import is_int
 from ._time import parse_time
 from .errors import AuthFoundationError
 
+# >>> ここから下は tools/sync_audit_actions.py が spec/audit-actions.json から書く(手で直さない)
 # spec/audit-actions.json と同じ一覧(テストで突き合わせる)。(名前, 必須か, 保存期間, 予約か)
 ACTIONS = (
     ('auth.login.succeeded', True, '13_months', False),
@@ -42,6 +44,7 @@ PATTERNS = (
     ('^[a-z][a-z0-9_]*\\.(archived|unarchived)$', True, 'indefinite'),
     ('^app(\\.[a-z][a-z0-9_]*)+$', False, '13_months'),
 )
+# <<< ここまで
 
 _BY_NAME = {a[0]: a for a in ACTIONS}
 _COMPILED = [(re.compile(p[:-1] + r"\Z" if p.endswith("$") else p), req, ret) for p, req, ret in PATTERNS]
@@ -61,7 +64,9 @@ FIELDS = (
     ("created_at", True, "time"),
 )
 _FIELD_NAMES = tuple(f[0] for f in FIELDS)
-SECRET_WORDS = ("password", "passwd", "secret", "token", "session", "otp")
+SECRET_WORDS = ("password", "passwd", "pwd", "secret", "token", "session", "otp", "code")
+_CAMEL = re.compile(r"([a-z0-9])([A-Z])")
+_SEP = re.compile(r"[^a-z0-9]+")
 
 
 def _lookup(action):
@@ -85,8 +90,9 @@ def audit_retention(action):
 
 
 def _is_secret(key):
-    k = str(key).lower()
-    return k == "code" or any(w in k for w in SECRET_WORDS)
+    # 単語に分ける: 大文字の前で区切り、小文字にして英数字以外で区切る。単語が秘密の語かその複数形なら秘密
+    words = _SEP.split(_CAMEL.sub(r"\1_\2", str(key)).lower())
+    return any(w in SECRET_WORDS or (w.endswith("s") and w[:-1] in SECRET_WORDS) for w in words)
 
 
 def _scan(value, prefix, out):
@@ -117,7 +123,7 @@ def validate_audit_event(event):
             if parse_time(v) is None:
                 out.append({"code": "invalid_time", "field": name})
         elif kind == "id":
-            if not (isinstance(v, str) or (isinstance(v, int) and not isinstance(v, bool))):
+            if not (isinstance(v, str) or is_int(v)):
                 out.append({"code": "invalid_type", "field": name})
         elif kind == "obj":
             if not isinstance(v, dict):

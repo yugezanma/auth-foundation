@@ -144,6 +144,69 @@
    ]
   },
   {
+   "name": "動詞の一覧が配列でない",
+   "call": "validate_catalog",
+   "args": {
+    "catalog": {
+     "features": {
+      "report": "view,edit",
+      "member": [
+       "view"
+      ],
+      "audit": [
+       "view"
+      ]
+     },
+     "roles": [
+      {
+       "key": "r",
+       "rank": 1,
+       "audience": "internal",
+       "perms": {
+        "member": "view"
+       }
+      }
+     ]
+    }
+   },
+   "expect": [
+    {
+     "code": "invalid_list",
+     "feature": "report"
+    },
+    {
+     "code": "invalid_list",
+     "role": "r",
+     "feature": "member"
+    }
+   ]
+  },
+  {
+   "name": "整数の値の小数(1.0)は整数とみなす(JS では 1.0 と 1 を見分けられないため)",
+   "call": "validate_catalog",
+   "args": {
+    "catalog": {
+     "features": {
+      "member": [
+       "view"
+      ],
+      "audit": [
+       "view"
+      ]
+     },
+     "roles": [
+      {
+       "key": "r",
+       "rank": 1.0,
+       "audience": "internal",
+       "perms": {}
+      }
+     ]
+    }
+   },
+   "expect": []
+  },
+  {
    "name": "誤りをまとめて決まった順に返す",
    "call": "validate_catalog",
    "args": {

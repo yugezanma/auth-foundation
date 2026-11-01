@@ -632,6 +632,321 @@
    "expect_error": "duplicate_site"
   },
   {
+   "name": "ロールの動詞の一覧が文字列なら何も許さない(部分一致しない)",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u10",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    },
+    "catalog": {
+     "features": {
+      "report": [
+       "view",
+       "create",
+       "edit",
+       "approve"
+      ],
+      "site_master": [
+       "view",
+       "edit"
+      ],
+      "contract": [
+       "view",
+       "edit"
+      ],
+      "member": [
+       "view",
+       "create",
+       "edit"
+      ],
+      "audit": [
+       "view"
+      ]
+     },
+     "roles": [
+      {
+       "key": "w",
+       "rank": 1,
+       "audience": "internal",
+       "perms": {
+        "report": "view,create"
+       }
+      }
+     ]
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u10",
+       "status": "active"
+      }
+     ],
+     "teams": [
+      {
+       "id": "t1",
+       "members": [
+        "u2",
+        "u3"
+       ]
+      },
+      {
+       "id": "t2",
+       "members": [
+        "u4"
+       ]
+      }
+     ],
+     "assignments": [
+      {
+       "id": "x1",
+       "principal": {
+        "type": "user",
+        "id": "u10"
+       },
+       "role": "w",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "カタログの動詞の一覧が文字列なら、その権限は未知",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u10",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    },
+    "catalog": {
+     "features": {
+      "report": "view",
+      "member": [
+       "view"
+      ],
+      "audit": [
+       "view"
+      ]
+     },
+     "roles": []
+    }
+   },
+   "expect_error": "unknown_permission"
+  },
+  {
+   "name": "チームのメンバーが文字列なら誰も入っていない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": [
+        "g1"
+       ]
+      },
+      {
+       "id": "s2",
+       "groups": [
+        "g1",
+        "g2"
+       ]
+      },
+      {
+       "id": "s3",
+       "groups": [
+        "g2"
+       ]
+      },
+      {
+       "id": "s4",
+       "groups": []
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      }
+     ],
+     "teams": [
+      {
+       "id": "tt",
+       "members": "u1u2"
+      }
+     ],
+     "assignments": [
+      {
+       "id": "x1",
+       "principal": {
+        "type": "team",
+        "id": "tt"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "no_permission",
+    "paths": []
+   }
+  },
+  {
+   "name": "拠点のグループが文字列ならどのグループにも属さない",
+   "call": "evaluate",
+   "args": {
+    "user_id": "u1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "s1"
+    },
+    "snapshot": {
+     "tenant_id": "t",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "s1",
+       "groups": "g1"
+      }
+     ],
+     "groups": [
+      {
+       "id": "g1"
+      },
+      {
+       "id": "g2"
+      }
+     ],
+     "memberships": [
+      {
+       "user_id": "u1",
+       "status": "active"
+      }
+     ],
+     "teams": [
+      {
+       "id": "t1",
+       "members": [
+        "u2",
+        "u3"
+       ]
+      },
+      {
+       "id": "t2",
+       "members": [
+        "u4"
+       ]
+      }
+     ],
+     "assignments": [
+      {
+       "id": "x1",
+       "principal": {
+        "type": "user",
+        "id": "u1"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "site_group",
+        "id": "g1"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "out_of_scope",
+    "paths": []
+   }
+  },
+  {
    "name": "permissions_at も同じエラー",
    "call": "permissions_at",
    "args": {
