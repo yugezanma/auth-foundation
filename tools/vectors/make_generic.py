@@ -477,6 +477,50 @@ files["guard"] = {
         gc("未知の守る権限", B, B, "u1", error="unknown_permission", perm="member.delete"),
     ]}
 
+# ---------------- tenants
+# テナントごとのスナップショット(設計.md §3-3)。X と Y に同じ ID の拠点 A がある。op1 は運営側の人で、どちらにも所属しない
+def tsnap(tid, sites, memberships, assignments):
+    return {"tenant_id": tid, "now": NOW, "sites": [{"id": s, "groups": []} for s in sites], "groups": [],
+            "memberships": [{"user_id": u, "status": "active"} for u in memberships], "teams": [],
+            "assignments": assignments}
+
+
+TX = tsnap("x", ["A", "B"], ["xa", "xc"], [A("ax1", "user", "xa", "admin", "org"), A("ax2", "user", "xc", "worker", "site", "A")])
+TY = tsnap("y", ["A", "C"], ["ya", "yv"], [A("ay1", "user", "ya", "admin", "org"), A("ay2", "user", "yv", "viewer", "org")])
+TY_NO_ADMIN = tsnap("y", ["A", "C"], ["ya", "yv"], [A("ay2", "user", "yv", "viewer", "org")])
+TY_MIXED = tsnap("y", ["A", "C"], ["ya", "yv"], TY["assignments"] + [A("ax9", "user", "ya", "worker", "site", "B")])
+
+files["tenants"] = {
+    "description": "テナントが分かれていること。部品はスナップショット(1つのテナントのデータ)の中だけを見るので、ほかのテナントの人は not_member、"
+                   "同じ ID の拠点も混ざらず、check_guard もテナントごとになる。op1 は運営側の人で、お客様のテナントに所属しない(設計.md §3-8)",
+    "catalog": CAT,
+    "snapshot": TX,
+    "cases": [
+        ev("X の管理者は X の拠点 A を操作できる", "xa", "report.edit", S("A"), ok(P("ax1", "admin", "org"))),
+        ev("X の作成者は X の拠点 A で起票できる", "xc", "report.create", S("A"), ok(P("ax2", "worker", "site", "A"))),
+        ev("Y の人を X のスナップショットで判定すると not_member", "yv", "report.view", S("A"), no("not_member")),
+        ev("運営側の人はお客様のテナントに所属しないので not_member", "op1", "report.view", S("A"), no("not_member")),
+        ev("X の管理者を Y のスナップショットで判定すると not_member", "xa", "report.view", S("A"), no("not_member"),
+           snapshot=TY),
+        ev("Y の閲覧者は Y の拠点 A を見られる(X の拠点 A とは別)", "yv", "report.view", S("A"),
+           ok(P("ay2", "viewer", "org")), snapshot=TY),
+        ev("Y に無い拠点(X にだけある B)は Y ではエラー", "ya", "report.view", S("B"), error="unknown_site", snapshot=TY),
+        ev("ほかのテナントの割当が混ざり、Y に無い拠点を指していればエラー", "ya", "report.view", S("A"),
+           error="unknown_site", snapshot=TY_MIXED),
+        call("X の作成者が起票できる拠点(X の中)", "sites_with", {"user_id": "xc", "permission": "report.create"}, ["A"]),
+        call("X の作成者を Y で数えると0件", "sites_with",
+             {"user_id": "xc", "permission": "report.create", "snapshot": TY}, []),
+        call("Y の管理者が見られる拠点(Y の中だけ)", "sites_with",
+             {"user_id": "ya", "permission": "report.view", "snapshot": TY}, ["A", "C"]),
+        call("X の管理者の Y での権限は空", "permissions_at", {"user_id": "xa", "resource": ORG, "snapshot": TY}, {}),
+        call("X に管理者がいても、Y の最後の管理者が自分を外せば Y で違反", "check_guard",
+             {"before": TY, "after": TY_NO_ADMIN, "actor_user_id": "ya"}, [{"code": "no_admin_left"}, {"code": "self_lockout"}]),
+        call("運営側の人が Y の最後の管理者を外すと no_admin_left(運営側は数に入らない)", "check_guard",
+             {"before": TY, "after": TY_NO_ADMIN, "actor_user_id": "op1"}, [{"code": "no_admin_left"}]),
+        call("X の管理者が Y の変更をしても、X の管理者は Y の数に入らない", "check_guard",
+             {"before": TY, "after": TY, "actor_user_id": "xa"}, []),
+    ]}
+
 # ---------------- audit
 EV_MIN = {"host_tenant_id": "t", "actor_user_id": "u1", "action": "member.created",
           "target_type": "user", "target_id": "u2", "created_at": "2026-11-01T09:00:00+09:00"}
@@ -555,10 +599,31 @@ files["audit"] = {
             {"code": "secret_field", "field": "after.site_code"}]),
         ve("秘密の語を単語の途中に含むだけなら秘密でない", withv(EV_FULL, after={
             "footprint_kwh": 1, "hotplate": 2, "barcode": "x", "tokenless": None, "unsecret": 1}), []),
+        call("運営側の操作は actor_tenant_id を operator にしたまま作る", "make_audit_event", {"fields": {
+            "host_tenant_id": "t2", "actor_user_id": "op1", "actor_tenant_id": "ops", "action": "tenant.created",
+            "target_type": "tenant", "target_id": "t2", "after": {"name": "B社"}, "created_at": "2026-11-02T09:00:00+09:00"}}, {
+            "id": None, "host_tenant_id": "t2", "actor_user_id": "op1", "actor_tenant_id": "ops", "action": "tenant.created",
+            "target_type": "tenant", "target_id": "t2", "before": None, "after": {"name": "B社"}, "ip_address": None,
+            "created_at": "2026-11-02T09:00:00+09:00"}),
+        ve("運営側がテナントを止める", withv(EV_FULL, actor_user_id="op1", actor_tenant_id="ops", action="tenant.suspended",
+                                     target_type="tenant", target_id="t", before={"status": "active"},
+                                     after={"status": "suspended"}), []),
+        ve("お客様の管理者がサポートの閲覧を許可する", withv(EV_FULL, action="support_access.granted", target_type="support_grant",
+                                             target_id="g1", before=None,
+                                             after={"expires_at": "2026-11-09T09:00:00+09:00"}), []),
+        ve("運営側がサポートの閲覧を始める", withv(EV_FULL, actor_user_id="op1", actor_tenant_id="ops",
+                                        action="support_access.started", target_type="support_grant", target_id="g1",
+                                        before=None, after=None), []),
+        ve("テナントの分からないログインの失敗は operator テナントに記録する", {
+            "host_tenant_id": "ops", "actor_user_id": None, "actor_tenant_id": "ops", "action": "auth.login.failed",
+            "target_type": "email", "target_id": "nobody@example.com", "after": {"reason": "unknown_email"},
+            "created_at": "2026-11-02T09:00:00+09:00"}, []),
         call("ログインの記録は13か月", "audit_retention", {"action": "auth.login.failed"}, "13_months"),
         call("ユーザー管理は無期限", "audit_retention", {"action": "member.created"}, "indefinite"),
         call("拠点の追加は無期限", "audit_retention", {"action": "site.created"}, "indefinite"),
         call("拠点以外のアーカイブは無期限", "audit_retention", {"action": "equipment.unarchived"}, "indefinite"),
+        call("テナントの停止は無期限", "audit_retention", {"action": "tenant.suspended"}, "indefinite"),
+        call("サポートの閲覧は無期限", "audit_retention", {"action": "support_access.started"}, "indefinite"),
         call("業務の記録は13か月", "audit_retention", {"action": "app.pdf.exported"}, "13_months"),
         call("予約の操作名", "audit_retention", {"action": "report.published"}, "indefinite"),
         call("未知の操作名", "audit_retention", {"action": "member.deleted"}, error="unknown_action"),

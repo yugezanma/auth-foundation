@@ -650,6 +650,124 @@
    "expect": []
   },
   {
+   "name": "運営側の操作は actor_tenant_id を operator にしたまま作る",
+   "call": "make_audit_event",
+   "args": {
+    "fields": {
+     "host_tenant_id": "t2",
+     "actor_user_id": "op1",
+     "actor_tenant_id": "ops",
+     "action": "tenant.created",
+     "target_type": "tenant",
+     "target_id": "t2",
+     "after": {
+      "name": "B社"
+     },
+     "created_at": "2026-11-02T09:00:00+09:00"
+    }
+   },
+   "expect": {
+    "id": null,
+    "host_tenant_id": "t2",
+    "actor_user_id": "op1",
+    "actor_tenant_id": "ops",
+    "action": "tenant.created",
+    "target_type": "tenant",
+    "target_id": "t2",
+    "before": null,
+    "after": {
+     "name": "B社"
+    },
+    "ip_address": null,
+    "created_at": "2026-11-02T09:00:00+09:00"
+   }
+  },
+  {
+   "name": "運営側がテナントを止める",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "op1",
+     "actor_tenant_id": "ops",
+     "action": "tenant.suspended",
+     "target_type": "tenant",
+     "target_id": "t",
+     "before": {
+      "status": "active"
+     },
+     "after": {
+      "status": "suspended"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "お客様の管理者がサポートの閲覧を許可する",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "u1",
+     "actor_tenant_id": "t",
+     "action": "support_access.granted",
+     "target_type": "support_grant",
+     "target_id": "g1",
+     "before": null,
+     "after": {
+      "expires_at": "2026-11-09T09:00:00+09:00"
+     },
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "運営側がサポートの閲覧を始める",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "id": "e1",
+     "host_tenant_id": "t",
+     "actor_user_id": "op1",
+     "actor_tenant_id": "ops",
+     "action": "support_access.started",
+     "target_type": "support_grant",
+     "target_id": "g1",
+     "before": null,
+     "after": null,
+     "ip_address": "127.0.0.1",
+     "created_at": "2026-11-01T09:00:00Z"
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "テナントの分からないログインの失敗は operator テナントに記録する",
+   "call": "validate_audit_event",
+   "args": {
+    "event": {
+     "host_tenant_id": "ops",
+     "actor_user_id": null,
+     "actor_tenant_id": "ops",
+     "action": "auth.login.failed",
+     "target_type": "email",
+     "target_id": "nobody@example.com",
+     "after": {
+      "reason": "unknown_email"
+     },
+     "created_at": "2026-11-02T09:00:00+09:00"
+    }
+   },
+   "expect": []
+  },
+  {
    "name": "ログインの記録は13か月",
    "call": "audit_retention",
    "args": {
@@ -678,6 +796,22 @@
    "call": "audit_retention",
    "args": {
     "action": "equipment.unarchived"
+   },
+   "expect": "indefinite"
+  },
+  {
+   "name": "テナントの停止は無期限",
+   "call": "audit_retention",
+   "args": {
+    "action": "tenant.suspended"
+   },
+   "expect": "indefinite"
+  },
+  {
+   "name": "サポートの閲覧は無期限",
+   "call": "audit_retention",
+   "args": {
+    "action": "support_access.started"
    },
    "expect": "indefinite"
   },

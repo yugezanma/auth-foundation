@@ -1,0 +1,1207 @@
+{
+ "name": "tenants",
+ "description": "テナントが分かれていること。部品はスナップショット(1つのテナントのデータ)の中だけを見るので、ほかのテナントの人は not_member、同じ ID の拠点も混ざらず、check_guard もテナントごとになる。op1 は運営側の人で、お客様のテナントに所属しない(設計.md §3-8)",
+ "catalog": {
+  "features": {
+   "report": [
+    "view",
+    "create",
+    "edit",
+    "approve"
+   ],
+   "site_master": [
+    "view",
+    "edit"
+   ],
+   "contract": [
+    "view",
+    "edit"
+   ],
+   "member": [
+    "view",
+    "create",
+    "edit"
+   ],
+   "audit": [
+    "view"
+   ]
+  },
+  "roles": [
+   {
+    "key": "admin",
+    "rank": 5,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view",
+      "edit"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ],
+     "member": [
+      "view",
+      "create",
+      "edit"
+     ],
+     "audit": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "manager",
+    "rank": 4,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create",
+      "edit",
+      "approve"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   },
+   {
+    "key": "worker",
+    "rank": 3,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view",
+      "create"
+     ]
+    }
+   },
+   {
+    "key": "office",
+    "rank": 2,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "contract": [
+      "view",
+      "edit"
+     ]
+    }
+   },
+   {
+    "key": "viewer",
+    "rank": 1,
+    "audience": "internal",
+    "perms": {
+     "report": [
+      "view"
+     ],
+     "site_master": [
+      "view"
+     ]
+    }
+   }
+  ]
+ },
+ "snapshot": {
+  "tenant_id": "x",
+  "now": "2026-11-01T09:00:00+09:00",
+  "sites": [
+   {
+    "id": "A",
+    "groups": []
+   },
+   {
+    "id": "B",
+    "groups": []
+   }
+  ],
+  "groups": [],
+  "memberships": [
+   {
+    "user_id": "xa",
+    "status": "active"
+   },
+   {
+    "user_id": "xc",
+    "status": "active"
+   }
+  ],
+  "teams": [],
+  "assignments": [
+   {
+    "id": "ax1",
+    "principal": {
+     "type": "user",
+     "id": "xa"
+    },
+    "role": "admin",
+    "scope": {
+     "type": "org",
+     "id": null
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   },
+   {
+    "id": "ax2",
+    "principal": {
+     "type": "user",
+     "id": "xc"
+    },
+    "role": "worker",
+    "scope": {
+     "type": "site",
+     "id": "A"
+    },
+    "exclusions": [],
+    "expires_at": null,
+    "revoked_at": null,
+    "granted_by": "u1",
+    "created_at": "2026-10-01T09:00:00+09:00"
+   }
+  ]
+ },
+ "cases": [
+  {
+   "name": "X の管理者は X の拠点 A を操作できる",
+   "call": "evaluate",
+   "args": {
+    "user_id": "xa",
+    "permission": "report.edit",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "ax1",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "admin",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "X の作成者は X の拠点 A で起票できる",
+   "call": "evaluate",
+   "args": {
+    "user_id": "xc",
+    "permission": "report.create",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "ax2",
+      "via": null,
+      "scope": {
+       "type": "site",
+       "id": "A"
+      },
+      "role": "worker",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "Y の人を X のスナップショットで判定すると not_member",
+   "call": "evaluate",
+   "args": {
+    "user_id": "yv",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "運営側の人はお客様のテナントに所属しないので not_member",
+   "call": "evaluate",
+   "args": {
+    "user_id": "op1",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "X の管理者を Y のスナップショットで判定すると not_member",
+   "call": "evaluate",
+   "args": {
+    "user_id": "xa",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    },
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": false,
+    "reason": "not_member",
+    "paths": []
+   }
+  },
+  {
+   "name": "Y の閲覧者は Y の拠点 A を見られる(X の拠点 A とは別)",
+   "call": "evaluate",
+   "args": {
+    "user_id": "yv",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    },
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {
+    "allowed": true,
+    "reason": null,
+    "paths": [
+     {
+      "assignment_id": "ay2",
+      "via": null,
+      "scope": {
+       "type": "org",
+       "id": null
+      },
+      "role": "viewer",
+      "direct": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "Y に無い拠点(X にだけある B)は Y ではエラー",
+   "call": "evaluate",
+   "args": {
+    "user_id": "ya",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "B"
+    },
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "unknown_site"
+  },
+  {
+   "name": "ほかのテナントの割当が混ざり、Y に無い拠点を指していればエラー",
+   "call": "evaluate",
+   "args": {
+    "user_id": "ya",
+    "permission": "report.view",
+    "resource": {
+     "type": "site",
+     "id": "A"
+    },
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ax9",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "worker",
+       "scope": {
+        "type": "site",
+        "id": "B"
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect_error": "unknown_site"
+  },
+  {
+   "name": "X の作成者が起票できる拠点(X の中)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "xc",
+    "permission": "report.create"
+   },
+   "expect": [
+    "A"
+   ]
+  },
+  {
+   "name": "X の作成者を Y で数えると0件",
+   "call": "sites_with",
+   "args": {
+    "user_id": "xc",
+    "permission": "report.create",
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": []
+  },
+  {
+   "name": "Y の管理者が見られる拠点(Y の中だけ)",
+   "call": "sites_with",
+   "args": {
+    "user_id": "ya",
+    "permission": "report.view",
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": [
+    "A",
+    "C"
+   ]
+  },
+  {
+   "name": "X の管理者の Y での権限は空",
+   "call": "permissions_at",
+   "args": {
+    "user_id": "xa",
+    "resource": {
+     "type": "org"
+    },
+    "snapshot": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    }
+   },
+   "expect": {}
+  },
+  {
+   "name": "X に管理者がいても、Y の最後の管理者が自分を外せば Y で違反",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "ya"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    },
+    {
+     "code": "self_lockout"
+    }
+   ]
+  },
+  {
+   "name": "運営側の人が Y の最後の管理者を外すと no_admin_left(運営側は数に入らない)",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "op1"
+   },
+   "expect": [
+    {
+     "code": "no_admin_left"
+    }
+   ]
+  },
+  {
+   "name": "X の管理者が Y の変更をしても、X の管理者は Y の数に入らない",
+   "call": "check_guard",
+   "args": {
+    "before": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "after": {
+     "tenant_id": "y",
+     "now": "2026-11-01T09:00:00+09:00",
+     "sites": [
+      {
+       "id": "A",
+       "groups": []
+      },
+      {
+       "id": "C",
+       "groups": []
+      }
+     ],
+     "groups": [],
+     "memberships": [
+      {
+       "user_id": "ya",
+       "status": "active"
+      },
+      {
+       "user_id": "yv",
+       "status": "active"
+      }
+     ],
+     "teams": [],
+     "assignments": [
+      {
+       "id": "ay1",
+       "principal": {
+        "type": "user",
+        "id": "ya"
+       },
+       "role": "admin",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      },
+      {
+       "id": "ay2",
+       "principal": {
+        "type": "user",
+        "id": "yv"
+       },
+       "role": "viewer",
+       "scope": {
+        "type": "org",
+        "id": null
+       },
+       "exclusions": [],
+       "expires_at": null,
+       "revoked_at": null,
+       "granted_by": "u1",
+       "created_at": "2026-10-01T09:00:00+09:00"
+      }
+     ]
+    },
+    "actor_user_id": "xa"
+   },
+   "expect": []
+  }
+ ]
+}

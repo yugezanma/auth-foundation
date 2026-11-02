@@ -60,7 +60,7 @@ for uid, role, contracts, active in USERS:
                        "granted_by": "admin", "created_at": "2026-10-29T09:00:00+09:00"})
 
 SNAPSHOT = {
-    "tenant_id": "default", "now": "2026-11-01T09:00:00+09:00",
+    "tenant_id": "demo", "now": "2026-11-01T09:00:00+09:00",
     "sites": [{"id": s, "groups": []} for s in SITES], "groups": [],
     "memberships": [{"user_id": u, "status": "active" if a else "suspended"} for u, _, _, a in USERS],
     "teams": [], "assignments": ASSIGN,
@@ -154,7 +154,8 @@ cases += [
 
 doc = {"name": "pda",
        "description": "電力データ集計の今の判定(app/core/auth.py の can_operate・is_admin と断る理由)を、共通の形(設計.md §7)に当てはめたもの。"
-                      "sakusei3 は担当契約が0件の作成者で、割当だけでは閲覧と同じ no_permission になる(文言は画面のロールでアプリが選ぶ)。muko は無効にしたユーザー",
+                      "sakusei3 は担当契約が0件の作成者で、割当だけでは閲覧と同じ no_permission になる(文言は画面のロールでアプリが選ぶ)。muko は無効にしたユーザー。"
+                      "テナントはデモの会社 demo(設計.md §7-4)。会社ごとのスナップショットの1つに当たる",
        "catalog": CATALOG, "snapshot": SNAPSHOT, "cases": cases}
 with open(os.path.join(OUT, "pda.json"), "w", encoding="utf-8") as f:
     f.write(json.dumps(doc, ensure_ascii=False, indent=1) + "\n")

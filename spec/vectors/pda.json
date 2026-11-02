@@ -1,6 +1,6 @@
 {
  "name": "pda",
- "description": "電力データ集計の今の判定(app/core/auth.py の can_operate・is_admin と断る理由)を、共通の形(設計.md §7)に当てはめたもの。sakusei3 は担当契約が0件の作成者で、割当だけでは閲覧と同じ no_permission になる(文言は画面のロールでアプリが選ぶ)。muko は無効にしたユーザー",
+ "description": "電力データ集計の今の判定(app/core/auth.py の can_operate・is_admin と断る理由)を、共通の形(設計.md §7)に当てはめたもの。sakusei3 は担当契約が0件の作成者で、割当だけでは閲覧と同じ no_permission になる(文言は画面のロールでアプリが選ぶ)。muko は無効にしたユーザー。テナントはデモの会社 demo(設計.md §7-4)。会社ごとのスナップショットの1つに当たる",
  "catalog": {
   "features": {
    "report": [
@@ -73,7 +73,7 @@
   ]
  },
  "snapshot": {
-  "tenant_id": "default",
+  "tenant_id": "demo",
   "now": "2026-11-01T09:00:00+09:00",
   "sites": [
    {
@@ -4418,7 +4418,7 @@
    "call": "check_guard",
    "args": {
     "before": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -4699,7 +4699,7 @@
      ]
     },
     "after": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -4995,7 +4995,7 @@
    "call": "check_guard",
    "args": {
     "before": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -5276,7 +5276,7 @@
      ]
     },
     "after": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -5572,7 +5572,7 @@
    "call": "check_guard",
    "args": {
     "before": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -5853,7 +5853,7 @@
      ]
     },
     "after": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -6142,7 +6142,7 @@
    "call": "check_guard",
    "args": {
     "before": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {
@@ -6440,7 +6440,7 @@
      ]
     },
     "after": {
-     "tenant_id": "default",
+     "tenant_id": "demo",
      "now": "2026-11-01T09:00:00+09:00",
      "sites": [
       {

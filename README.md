@@ -87,7 +87,7 @@ const d = evaluate(CATALOG, snapshot, userId, 'report.edit', { type: 'site', id:
 ```
 
 - `CATALOG`(機能グループとロール)はアプリのソースに書き、アプリのテストで `validate_catalog(CATALOG) == []` を確かめる
-- `snapshot` はアプリのデータベースから作る(形は [spec/vectors.schema.md](spec/vectors.schema.md))
+- `snapshot` はアプリのデータベースから作る(形は [spec/vectors.schema.md](spec/vectors.schema.md))。**1つのスナップショットには1つのテナントのデータだけを入れる**(セッションのテナント。ほかのテナントのものを混ぜない。設計.md §3-3・§5)
 - 監査ログは `make_audit_event(...)` で作ってから、アプリが保存する
 
 **SolarOM の注意**: `デモアプリ/` はまるごと公開される。写し(`vectors/`・`MANIFEST.json` を含む)は `デモアプリ/` の外のサーバー側の置き場所に置き、画面で使うときは `auth-foundation.mjs` だけを `デモアプリ/` の下へ置く。
