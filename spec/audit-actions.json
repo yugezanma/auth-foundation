@@ -140,6 +140,48 @@
       "reserved": false
     },
     {
+      "name": "tenant.created",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "tenant.updated",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "tenant.suspended",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "tenant.reactivated",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "support_access.granted",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "support_access.revoked",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
+      "name": "support_access.started",
+      "required": true,
+      "retention": "indefinite",
+      "reserved": false
+    },
+    {
       "name": "collaboration.invited",
       "required": false,
       "retention": "indefinite",

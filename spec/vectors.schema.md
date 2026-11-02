@@ -59,6 +59,8 @@
 
 ## 3. 判定(`evaluate`)
 
+スナップショットは1つのテナントのデータ(設計.md §3-3)。`snapshot.tenant_id` は判定に使わず、確かめもしない。ほかのテナントの人は `memberships` に無いので `not_member` になり、ほかのテナントの拠点は `sites` に無いので `unknown_site` になる(`tenants.json`)。
+
 ### 3-1. 確かめる順と、エラーの種類
 
 1. `permission` が `feature.action` の形で、カタログの `features` にある → 無ければ `unknown_permission`
