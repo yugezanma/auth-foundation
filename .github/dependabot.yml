@@ -1,0 +1,14 @@
+# GitHub Actions の部品の版を上げる PR を、毎週月曜の朝に作る(部品は標準ライブラリだけなので、ほかの部品は無い)。
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    groups:
+      actions:
+        patterns: ["*"]
+    open-pull-requests-limit: 5

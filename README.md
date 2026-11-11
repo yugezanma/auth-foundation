@@ -27,6 +27,8 @@ tools/check.sh
 
 Python は `python3 -m unittest`、JS は `node --test`(Node 20 以上)。どちらも外部の依存は無い。
 
+GitHub Actions(`.github/workflows/test.yml`)でも、main への push と PR のたびに流れる(Python 3.11 と 3.13)。判定テストが生成スクリプト(`tools/vectors/`)の出力と一致すること(手で直されていないこと)も確かめる。SolarOM の判定テストは SolarOM のリポジトリが要るので、CI では作り直さない。
+
 ## 各アプリでの使い方
 
 部品はパッケージとして配らず、タグの中身を各アプリへ**写す**(理由は [docs/設計.md](docs/設計.md) §6-2)。写しは手で直さない。
