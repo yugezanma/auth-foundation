@@ -112,7 +112,8 @@ def main(argv=None):
     commit = git(repo, "rev-parse", "HEAD")
     dirty = bool(git(repo, "status", "--porcelain"))
     tags = git(repo, "tag", "--points-at", "HEAD").split()
-    tag = "v" + version if "v" + version in tags else None
+    # 未コミットの変更があれば、タグが HEAD を指していても中身はタグと違うので、タグの版とはみなさない(開発中)
+    tag = "v" + version if "v" + version in tags and not dirty else None
     if not args.allow_dev:
         if dirty:
             fail("未コミットの変更があります。タグを checkout した状態で実行してください(試しに写すなら --allow-dev)")

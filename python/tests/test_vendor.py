@@ -55,6 +55,18 @@ class VendorTest(unittest.TestCase):
         self.assertEqual(r.returncode, 2)
         self.assertIn("未コミット", r.stderr)
 
+    def test_dirty_with_tag_is_dev(self):
+        # タグが HEAD を指していても、未コミットの変更があれば中身はタグと違うので開発中として写す
+        run(*(self.git + ["tag", "v" + self.version]))
+        with open(os.path.join(self.repo, "README.md"), "a", encoding="utf-8") as f:
+            f.write("x")
+        r = self.vendor("python", "--allow-dev")
+        self.assertEqual(r.returncode, 0, r.stderr + r.stdout)
+        self.assertIn("開発中", r.stdout)
+        with open(os.path.join(self.dest, "auth_foundation", "MANIFEST.json"), encoding="utf-8") as f:
+            m = json.load(f)
+        self.assertEqual((m["tag"], m["dirty"]), (None, True))
+
     def test_tagged_python(self):
         run(*(self.git + ["tag", "v" + self.version]))
         r = self.vendor("python")
