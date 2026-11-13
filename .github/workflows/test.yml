@@ -1,0 +1,31 @@
+# テストを流す(docs/設計.md §6)。main への push・PR・手で押したときに流れる。
+# Python は対応する最も古い版(3.11)と新しい版で流す。JS はランナーに入っている Node で流す(Node 20 以上)。
+name: テスト
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with: {python-version: "${{ matrix.python }}"}
+      - name: 版
+        run: python3 --version && node --version
+      - name: テスト(Python 版・JS 版・写し取り)
+        run: tools/check.sh
+      - name: 判定テストが生成スクリプトと一致する(手で直されていない)
+        run: |
+          out="$(mktemp -d)"
+          python3 tools/vectors/make_generic.py "$out" > /dev/null
+          python3 tools/vectors/make_pda.py "$out" > /dev/null
+          for f in "$out"/*.json; do diff -q "$f" "spec/vectors/$(basename "$f")"; done
